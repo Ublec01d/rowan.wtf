@@ -22,7 +22,7 @@ function askPassword() {
 
 
     if (w8w === a.toString()) {
-        window.location.href = "https://github.com/Ublec01d/website"; // target URL
+        window.location.href = "https://github.com/Ublec01d/test-website"; // target URL
     } else {
         alert("INCORRECT CODE! ...who are you?.. ಠ_ಠ ");
     }
