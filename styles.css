@@ -13,7 +13,7 @@ html, body {
 }
 
 button:hover {
-    cursor: url('images\cursor.cur'), pointer; /* Change cursor on hover */
+    cursor: url('images\rockhand.cur'), pointer; /* Change cursor on hover */
 }
 
 
