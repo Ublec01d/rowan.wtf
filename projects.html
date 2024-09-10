@@ -60,11 +60,11 @@
             <!-- Section for scripts -->
             <p id="scripts"><img src="images/coin.gif" alt="Skull"> <strong>scripts</strong> <img src="images/coin.gif" alt="Skull"></p>
             <ul>
-                <li><em>List of scripts that can be usefull in some situations</em></li>
+                <li><em>list of scripts that can be usefull in some situations</em></li>
             
             <br>
                 <!-- Script Boxes -->
-                <p><strong>Fix permission issues in PowerShell</strong></p>
+                <p><strong>fix permission issues in PowerShell</strong></p>
             <div class="script-box">
                 <pre id="script1">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</pre>
                 <button class="copy-btn" onclick="copyScript('script1')">Copy</button>
@@ -95,6 +95,7 @@
 
             <p><strong>pingsweep.py</strong></p>
             <li><em>python script that pings all addresses on the given subnet</em></li>
+              <li><em>can be very slow depending on your subnet size..</em></li>
             <div class="script-box">
                 <pre id="script3">
 import ipaddress
@@ -105,6 +106,7 @@ GREEN = '\033[92m'
 RED = '\033[91m'
 RESET = '\033[0m'
 
+# Function to ping an IP address
 def ping_ip(ip):
     try:
         output = subprocess.check_output(['ping', '-n', '1', str(ip)], stderr=subprocess.STDOUT, universal_newlines=True)
@@ -115,16 +117,31 @@ def ping_ip(ip):
     return False
 
 def main():
+    # Get network address and subnet from user
     network = input("Enter network address (e.g., 192.168.1.0/24): ")
     net = ipaddress.ip_network(network, strict=False)
 
+    # List to store all the IPs that are up
+    up_hosts = []
+
+    # Ping each IP in the subnet
     for ip in net.hosts():
         if ping_ip(ip):
+            # Store IPs that are up
+            up_hosts.append(str(ip))
             # Green output for "up" hosts
             print(f"{GREEN}{ip} is up{RESET}")
         else:
             # Red output for "down" hosts
             print(f"{RED}{ip} is down{RESET}")
+
+    # Summarize and print all up IPs
+    print("\nSummary of IPs that are up:")
+    if up_hosts:
+        for up_ip in up_hosts:
+            print(f"{GREEN}{up_ip} is up{RESET}")
+    else:
+        print(f"{RED}No hosts are up in this subnet.{RESET}")
 
 if __name__ == "__main__":
     main()
@@ -132,7 +149,7 @@ if __name__ == "__main__":
                 <button class="copy-btn" onclick="copyScript('script3')">Copy</button>
             </div>
 
-                <p><strong>Empty box...</strong></p>
+                <p><strong>empty box...</strong></p>
             <div class="script-box">
                 <pre id="script0">
 There's nothing here yet :(
