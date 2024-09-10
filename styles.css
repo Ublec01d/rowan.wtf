@@ -254,3 +254,18 @@ button#addButton:hover {
     border: 1px solid lime;
 }
 
+
+.dump-box {
+    background-color: black;
+    border: 1px solid lime;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+    max-width: 60%;  /* Set maximum width to 50% */
+    text-align: center;
+    white-space: normal;  /* Allow normal text wrapping */
+    word-wrap: break-word;  /* Break long words to wrap */
+    overflow-wrap: break-word;  /* Break words when necessary */
+    overflow: hidden;  /* Prevent scrollbars */
+}
