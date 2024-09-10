@@ -235,7 +235,7 @@ button#addButton:hover {
     white-space: normal;  /* Allow normal text wrapping */
     word-wrap: break-word;  /* Break long words to wrap */
     overflow-wrap: break-word;  /* Break words when necessary */
-    overflow: hidden;  /* Prevent scrollbars */
+  /*  overflow: hidden;   Prevent scrollbars */
 }
 
 .copy-btn {
@@ -267,5 +267,5 @@ button#addButton:hover {
     white-space: normal;  /* Allow normal text wrapping */
     word-wrap: break-word;  /* Break long words to wrap */
     overflow-wrap: break-word;  /* Break words when necessary */
-    overflow: hidden;  /* Prevent scrollbars */
+ /*   overflow: hidden;   Prevent scrollbars */
 }
