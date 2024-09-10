@@ -64,7 +64,7 @@
             
             <br>
                 <!-- Script Boxes -->
-                <p><strong>Permission issue fix for PowerShell</strong></p>
+                <p><strong>Fix permission issues in PowerShell</strong></p>
             <div class="script-box">
                 <pre id="script1">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</pre>
                 <button class="copy-btn" onclick="copyScript('script1')">Copy</button>
@@ -87,17 +87,59 @@
     }
   }
   
-  # Start monitoring SSIDs
+# Start monitoring SSIDs
   Monitor-SSIDs
                 </pre>
                 <button class="copy-btn" onclick="copyScript('script2')">Copy</button>
             </div>
 
-                <p><strong>Empty box...</strong></p>
+            <p><strong>pingsweep.py</strong></p>
+            <em>python script that pings all addresses on the given subnet</em>
             <div class="script-box">
-                <pre id="script3">There's nothing here yet :(</pre>
+                <pre id="script3">
+import ipaddress
+import subprocess
+
+# ANSI escape codes for colors
+GREEN = '\033[92m'
+RED = '\033[91m'
+RESET = '\033[0m'
+
+def ping_ip(ip):
+    try:
+        output = subprocess.check_output(['ping', '-n', '1', str(ip)], stderr=subprocess.STDOUT, universal_newlines=True)
+        if "TTL=" in output:
+            return True
+    except subprocess.CalledProcessError:
+        return False
+    return False
+
+def main():
+    network = input("Enter network address (e.g., 192.168.1.0/24): ")
+    net = ipaddress.ip_network(network, strict=False)
+
+    for ip in net.hosts():
+        if ping_ip(ip):
+            # Green output for "up" hosts
+            print(f"{GREEN}{ip} is up{RESET}")
+        else:
+            # Red output for "down" hosts
+            print(f"{RED}{ip} is down{RESET}")
+
+if __name__ == "__main__":
+    main()
+                    </pre>
                 <button class="copy-btn" onclick="copyScript('script3')">Copy</button>
             </div>
+
+                <p><strong>Empty box...</strong></p>
+            <div class="script-box">
+                <pre id="script0">
+There's nothing here yet :(
+                </pre>
+                <button class="copy-btn" onclick="copyScript('script0')">Copy</button>
+            </div>
+
             <!-- Add more script boxes as needed -->
 
 
