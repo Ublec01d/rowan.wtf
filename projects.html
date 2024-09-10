@@ -53,6 +53,42 @@
                 <li><em>someday a list of scripts will appear at this very spot</em></li>
             
             <br>
+                <!-- Script Boxes -->
+                <p><strong>Permission issue fix for PowerShell</strong></p>
+            <div class="script-box">
+                <pre id="script1">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</pre>
+                <button class="copy-btn" onclick="copyScript('script1')">Copy</button>
+            </div>
+
+                <p><strong>Monitor & Display SSID's in PowerShell</strong></p>
+            <div class="script-box">
+                <pre id="script2"># Function to continuously monitor and display SSIDs
+                    function Monitor-SSIDs {
+                      while ($true) {
+                          Clear-Host
+                          Write-Host "Scanning for SSIDs..."
+                          # Run the netsh command to list available SSIDs
+                          $ssidList = netsh wlan show networks | Select-String -Pattern '^SSID \d+ : (.+)$' | ForEach-Object { $_.Matches.Groups[1].Value }
+                    
+                          # Output the list of SSIDs
+                          $ssidList
+                          Start-Sleep -Seconds 5  # Adjust the refresh interval as needed
+                      }
+                    }
+                    
+                    # Start monitoring SSIDs
+                    Monitor-SSIDs</pre>
+                <button class="copy-btn" onclick="copyScript('script2')">Copy</button>
+            </div>
+
+                <p><strong>Empty box...</strong></p>
+            <div class="script-box">
+                <pre id="script3">There's nothing here.</pre>
+                <button class="copy-btn" onclick="copyScript('script3')">Copy</button>
+            </div>
+            <!-- Add more script boxes as needed -->
+
+
             <br>
 
             <!-- Section for Infodump -->
@@ -94,6 +130,8 @@
 
     <script src="firebaseapp.js"></script>
     <script src="banner.js"></script>
+    <script src="copyScript.js"></script>
+
 
 </body>
 </html>
