@@ -72,22 +72,24 @@
 
                 <p><strong>Monitor & Display SSID's in PowerShell</strong></p>
             <div class="script-box">
-                <pre id="script2"># Function to continuously monitor and display SSIDs
-                    function Monitor-SSIDs {
-                      while ($true) {
-                          Clear-Host
-                          Write-Host "Scanning for SSIDs..."
-                          # Run the netsh command to list available SSIDs
-                          $ssidList = netsh wlan show networks | Select-String -Pattern '^SSID \d+ : (.+)$' | ForEach-Object { $_.Matches.Groups[1].Value }
-                    
-                          # Output the list of SSIDs
-                          $ssidList
-                          Start-Sleep -Seconds 5  # Adjust the refresh interval as needed
-                      }
-                    }
-                    
-                    # Start monitoring SSIDs
-                    Monitor-SSIDs</pre>
+                <pre id="script2">
+# Function to continuously monitor and display SSIDs
+  function Monitor-SSIDs {
+    while ($true) {
+        Clear-Host
+        Write-Host "Scanning for SSIDs..."
+        # Run the netsh command to list available SSIDs
+        $ssidList = netsh wlan show networks | Select-String -Pattern '^SSID \d+ : (.+)$' | ForEach-Object { $_.Matches.Groups[1].Value }
+  
+        # Output the list of SSIDs
+        $ssidList
+        Start-Sleep -Seconds 5  # Adjust the refresh interval as needed
+    }
+  }
+  
+  # Start monitoring SSIDs
+  Monitor-SSIDs
+                </pre>
                 <button class="copy-btn" onclick="copyScript('script2')">Copy</button>
             </div>
 
