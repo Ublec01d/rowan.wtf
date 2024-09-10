@@ -12,6 +12,12 @@ html, body {
     zoom: 100%;  /* Set zoom level to 100% */
 }
 
+button:hover {
+    cursor: url('images\cursor.cur'), pointer; /* Change cursor on hover */
+}
+
+
+
 ul {
     list-style-type: none; /* Remove bullet points */
     padding: 0; /* Remove default padding */
