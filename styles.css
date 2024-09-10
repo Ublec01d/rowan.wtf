@@ -12,8 +12,34 @@ html, body {
     zoom: 100%;  /* Set zoom level to 100% */
 }
 
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: black; /* Track color to match the background */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: lime; /* Thumb color */
+    border-radius: 10px;    /* Rounded corners */
+    border: 2px solid black; /* Border around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: red; /* Color on hover */
+}
+
+/* Applies to Firefox (doesn't support WebKit scrollbars) */
+body {
+    scrollbar-color: lime black; /* Thumb and track colors */
+    scrollbar-width: thin;       /* Thin scrollbar */
+}
+
+
 button:hover {
-    cursor: url('images\rockhand.cur'), pointer; /* Change cursor on hover */
+    cursor: url('images/rockhand.cur'), pointer; /* Change cursor on hover */
 }
 
 
@@ -235,7 +261,7 @@ button#addButton:hover {
     white-space: normal;  /* Allow normal text wrapping */
     word-wrap: break-word;  /* Break long words to wrap */
     overflow-wrap: break-word;  /* Break words when necessary */
-  /*  overflow: hidden;   Prevent scrollbars */
+    overflow: auto;  /* scrollbars */
 }
 
 .copy-btn {
@@ -267,5 +293,5 @@ button#addButton:hover {
     white-space: normal;  /* Allow normal text wrapping */
     word-wrap: break-word;  /* Break long words to wrap */
     overflow-wrap: break-word;  /* Break words when necessary */
- /*   overflow: hidden;   Prevent scrollbars */
+    overflow: auto;  /* scrollbars */
 }
