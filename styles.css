@@ -37,11 +37,17 @@ body {
     scrollbar-width: thin;       /* Thin scrollbar */
 }
 
-
-button:hover {
+/* Custom cursor for links and buttons */
+a:hover, button:hover, .copy-btn:hover, .banner-link:hover {
     cursor: url('images/rockhand.cur'), pointer; /* Change cursor on hover */
 }
 
+/* Other button styles */
+button#addButton:hover {
+    background-color: black;
+    color: lime;
+    border: 2px solid lime; /* Add a border on hover for effect */
+}
 
 
 ul {
