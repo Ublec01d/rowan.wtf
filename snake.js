@@ -50,7 +50,7 @@ function gameLoop() {
                 food = generateRandomPosition();
                 score++;
                 updateScore();
-                speed = Math.max(0.1, speed * 0.98);  // Slower increase (reduce by 2% each time)
+                speed = Math.max(0.1, speed * 0.95);  // Slower increase (reduce by 5% each time)
                 checkAndUpdateHighScore();  // Check if we need to update the high score
             }
             drawGame();
