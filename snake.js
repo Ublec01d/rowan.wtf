@@ -156,16 +156,25 @@ function generateRandomPosition() {
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw snake in green
-    ctx.fillStyle = '#00FF00';
-    snake.forEach(part => {
-        ctx.fillRect(part.x, part.y, gridSize, gridSize);
-    });
+    // Set color for the snake's head (slightly darker green)
+    const headColor = '#008000';  // Darker green
+    const bodyColor = '#00FF00';  // Regular green
 
-    // Draw food in red
+    // Draw the head
+    ctx.fillStyle = headColor;
+    ctx.fillRect(snake[0].x, snake[0].y, gridSize, gridSize);
+
+    // Draw the rest of the body
+    ctx.fillStyle = bodyColor;
+    for (let i = 1; i < snake.length; i++) {
+        ctx.fillRect(snake[i].x, snake[i].y, gridSize, gridSize);
+    }
+
+    // Draw the food in red
     ctx.fillStyle = '#FF0000';
     ctx.fillRect(food.x, food.y, gridSize, gridSize);
 }
+
 
 function updateScore() {
     scoreCounter.textContent = `bits: ${score}`;
