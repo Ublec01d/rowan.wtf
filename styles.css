@@ -335,3 +335,12 @@ button#addButton:hover {
 #restart-button:hover {
     background-color: #005f73;
 }
+
+#toggle-mode-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: black;
+    color: lime;
+    border: none;
+    cursor: pointer;
+}
