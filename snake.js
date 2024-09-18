@@ -16,6 +16,12 @@ let food = generateRandomPosition();
 
 const scoreCounter = document.getElementById('score-counter');
 const restartButton = document.getElementById('restart-button');
+let highScore = 0;  // Track high score
+
+// Fetch high score from HTML (set via Firebase in the HTML)
+window.onload = function () {
+    highScore = parseInt(document.getElementById('high-score').textContent.split(": ")[1]) || 0;
+};
 
 function gameLoop() {
     setTimeout(() => {
@@ -29,6 +35,7 @@ function gameLoop() {
                 score++;
                 updateScore();
                 speed = Math.max(30, speed - 10);  // Speed increases after each food
+                checkAndUpdateHighScore();  // Check if we need to update the high score
             }
             drawGame();
             requestAnimationFrame(gameLoop);
@@ -84,6 +91,14 @@ function drawGame() {
 
 function updateScore() {
     scoreCounter.textContent = `noms: ${score}`;
+}
+
+function checkAndUpdateHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        document.getElementById('high-score').textContent = `High Score: ${highScore}`;
+        window.updateHighScore(highScore);  // Call the Firebase function from the HTML to update the high score
+    }
 }
 
 function endGame() {
