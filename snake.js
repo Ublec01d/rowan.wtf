@@ -13,9 +13,11 @@ let score = 0;
 let snake = [{ x: gridSize * 10, y: gridSize * 10 }];
 let direction = { x: 0, y: 0 };
 let food = generateRandomPosition();
+let isAIEnabled = false; // Track whether the game is in AI mode or manual mode
 
 const scoreCounter = document.getElementById('score-counter');
 const restartButton = document.getElementById('restart-button');
+const toggleModeButton = document.getElementById('toggle-mode-button'); // Button to toggle between AI and manual
 let highScore = 0;  // Track high score globally
 
 // Fetch high score from Firebase (set via Firebase in the HTML)
@@ -36,6 +38,9 @@ function fetchHighScoreFromFirebase() {
 
 function gameLoop() {
     setTimeout(() => {
+        if (isAIEnabled) {
+            aiMakeMove();  // If AI is enabled, let AI decide the direction
+        }
         moveSnake();
         if (checkCollision()) {
             endGame();
@@ -45,13 +50,75 @@ function gameLoop() {
                 food = generateRandomPosition();
                 score++;
                 updateScore();
-                speed = Math.max(30, speed - 10);  // Speed increases after each food
+                speed = Math.max(0.1, speed - 5);  // Speed increases after each food
                 checkAndUpdateHighScore();  // Check if we need to update the high score
             }
             drawGame();
             requestAnimationFrame(gameLoop);
         }
     }, speed);
+}
+
+function aiMakeMove() {
+    const head = snake[0];
+    const foodDirection = { x: 0, y: 0 };
+
+    // Determine the direction to move toward the food
+    if (food.x > head.x) {
+        foodDirection.x = 1;  // Move right
+    } else if (food.x < head.x) {
+        foodDirection.x = -1;  // Move left
+    }
+
+    if (food.y > head.y) {
+        foodDirection.y = 1;  // Move down
+    } else if (food.y < head.y) {
+        foodDirection.y = -1;  // Move up
+    }
+
+    // Prioritize horizontal movement (for example)
+    if (foodDirection.x !== 0 && !checkCollisionInDirection(foodDirection.x, 0)) {
+        direction = { x: foodDirection.x, y: 0 };
+    } else if (foodDirection.y !== 0 && !checkCollisionInDirection(0, foodDirection.y)) {
+        direction = { x: 0, y: foodDirection.y };
+    } else {
+        // Handle cases where the AI is about to collide
+        avoidCollision();
+    }
+}
+
+function checkCollisionInDirection(xDir, yDir) {
+    const head = { x: snake[0].x + xDir * gridSize, y: snake[0].y + yDir * gridSize };
+
+    // Check for wall collisions
+    if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height) {
+        return true;
+    }
+
+    // Check for body collisions
+    for (let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function avoidCollision() {
+    // Try moving in a random direction or pick the first valid direction
+    const possibleDirections = [
+        { x: 1, y: 0 },  // Move right
+        { x: -1, y: 0 }, // Move left
+        { x: 0, y: 1 },  // Move down
+        { x: 0, y: -1 }  // Move up
+    ];
+
+    for (let dir of possibleDirections) {
+        if (!checkCollisionInDirection(dir.x, dir.y)) {
+            direction = dir;
+            return;
+        }
+    }
 }
 
 function moveSnake() {
@@ -101,7 +168,7 @@ function drawGame() {
 }
 
 function updateScore() {
-    scoreCounter.textContent = `bytes: ${score}`;
+    scoreCounter.textContent = `bits: ${score}`;
 }
 
 // Ensure we update the high score only if the new score is higher
@@ -135,7 +202,17 @@ function resetGame() {
 // Restart button functionality
 restartButton.addEventListener('click', resetGame);
 
+// Add functionality to toggle between AI and manual mode
+toggleModeButton.addEventListener('click', () => {
+    isAIEnabled = !isAIEnabled;
+    const modeText = isAIEnabled ? "AI Mode" : "Manual Mode";
+    toggleModeButton.textContent = `Switch to ${isAIEnabled ? "Manual" : "AI"} Mode`;
+    console.log(`Switched to ${modeText}`);
+});
+
 function handleDirectionChange(e) {
+    if (isAIEnabled) return; // Prevent manual control in AI mode
+
     switch (e.key) {
         case 'ArrowUp':
             if (direction.y === 0) direction = { x: 0, y: -1 };
