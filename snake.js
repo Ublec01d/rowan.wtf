@@ -16,12 +16,23 @@ let food = generateRandomPosition();
 
 const scoreCounter = document.getElementById('score-counter');
 const restartButton = document.getElementById('restart-button');
-let highScore = 0;  // Track high score
+let highScore = 0;  // Track high score globally
 
-// Fetch high score from HTML (set via Firebase in the HTML)
+// Fetch high score from Firebase (set via Firebase in the HTML)
 window.onload = function () {
-    highScore = parseInt(document.getElementById('high-score').textContent.split(": ")[1]) || 0;
+    // Ensure we fetch the high score from Firebase when the page loads
+    fetchHighScoreFromFirebase();
 };
+
+function fetchHighScoreFromFirebase() {
+    // Fetch the high score from Firebase (function defined in the HTML file)
+    getHighScoreFromFirebase().then((storedHighScore) => {
+        highScore = storedHighScore || 0; // Ensure we always have a number
+        document.getElementById('high-score').textContent = `High Score: ${highScore}`;
+    }).catch((error) => {
+        console.error('Error fetching high score:', error);
+    });
+}
 
 function gameLoop() {
     setTimeout(() => {
@@ -93,11 +104,12 @@ function updateScore() {
     scoreCounter.textContent = `noms: ${score}`;
 }
 
+// Ensure we update the high score only if the new score is higher
 function checkAndUpdateHighScore() {
     if (score > highScore) {
         highScore = score;
         document.getElementById('high-score').textContent = `High Score: ${highScore}`;
-        window.updateHighScore(highScore);  // Call the Firebase function from the HTML to update the high score
+        updateHighScoreInFirebase(highScore);  // Call Firebase update function
     }
 }
 
