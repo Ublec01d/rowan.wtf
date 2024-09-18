@@ -101,7 +101,7 @@ function drawGame() {
 }
 
 function updateScore() {
-    scoreCounter.textContent = `noms: ${score}`;
+    scoreCounter.textContent = `bytes: ${score}`;
 }
 
 // Ensure we update the high score only if the new score is higher
