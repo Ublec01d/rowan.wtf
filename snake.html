@@ -1,15 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YBXZ2PE747"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-YBXZ2PE747');
-</script>
+    <script type="module">
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgu0JwZdclSeM9W-7cGjcs7dfxUu23930",
+            authDomain: "ublec01d-b32bb.firebaseapp.com",
+            databaseURL: "https://ublec01d-b32bb-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "ublec01d-b32bb",
+            storageBucket: "ublec01d-b32bb.appspot.com",
+            messagingSenderId: "695529528296",
+            appId: "1:695529528296:web:3e34619f95fdac1fcf625d",
+            measurementId: "G-E1DCHYQ91Z"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        
+        let highScore = 0; // To track the current high score
+        
+        // Fetch high score from Firebase
+        const highScoreRef = ref(database, 'snakeGame/highScore');
+        get(highScoreRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                highScore = snapshot.val();
+                document.getElementById('high-score').textContent = `High Score: ${highScore}`;
+            } else {
+                console.log('No high score available');
+            }
+        }).catch((error) => {
+            console.error('Error fetching high score:', error);
+        });
+        
+        // Function to update the high score in Firebase
+        function updateHighScore(newScore) {
+            set(ref(database, 'snakeGame/highScore'), newScore).then(() => {
+                console.log('High score updated successfully');
+            }).catch((error) => {
+                console.error('Error updating high score:', error);
+            });
+        }
+        
+        // Export the function to make it available in snake.js
+        window.updateHighScore = updateHighScore;
+        
+        </script>
+        
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBXZ2PE747"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YBXZ2PE747');
+    </script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +67,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
     <div class="wrapper">
         <!-- Navigation bar -->
         <div id="navbar">
@@ -28,7 +77,6 @@
         </div>
 
         <!-- Title with marquee -->
-
         <marquee style="color: yellow;" behavior="alternate" scrollamount="6">// // // under construction // // //</marquee>
             
         <h1 id="main-title" style="position: relative; left: 0px; top: 0px;">
@@ -38,14 +86,12 @@
         
     </div>
 
-    <p>dev record: 20 noms</p>
+    <div id="high-score">High Score: 0</div>
     <div class="snake-game-container">
         <canvas id="snake-game"></canvas>
         <div id="score-counter">noms: 0</div>
         <button id="restart-button" style="display: none;">Restart</button>
     </div>
-
-    
 
     <img src="images/flipper.gif" width="50">
     <!-- Footer with more marquee and GIFs -->
@@ -55,7 +101,8 @@
         </a> U2VjcmV0cyBhbGwgb3ZlciB0aGUgcGxhY2Uh </marquee>
     </footer>
 
-    <script src="snake.js"></script>
+    <!-- Your snake game JavaScript (ensure it's also using module syntax) -->
+    <script type="module" src="snake.js"></script>
     <script src="banner.js"></script>
 
 </body>
