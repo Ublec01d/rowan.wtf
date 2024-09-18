@@ -301,3 +301,37 @@ button#addButton:hover {
     overflow-wrap: break-word;  /* Break words when necessary */
     overflow: auto;  /* scrollbars */
 }
+
+
+/* snake game */
+.snake-game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#snake-game {
+    border: 2px solid lime;
+    background-color: #000;  /* Set background to black */
+}
+
+#score-counter {
+    color: #fff;  /* White text for contrast */
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+#restart-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: black;
+    color: lime;
+    border: none;
+    cursor: pointer;
+}
+
+#restart-button:hover {
+    background-color: #005f73;
+}
