@@ -1,9 +1,11 @@
-
 import { aiMakeMove } from './snakeAI.js';
 
 const canvas = document.getElementById('snake-game');
 const ctx = canvas.getContext('2d');
 const aiToggleButton = document.getElementById('toggle-mode-button');
+const restartButton = document.getElementById('restart-button');
+const navbar = document.getElementById('navbar');  // Reference to the navigation bar
+const footer = document.getElementById('footer');  // Assumes a footer element with this ID
 
 // Global game variables
 let gridSize, snake, direction, food, score, highScore = 0;
@@ -12,13 +14,37 @@ let speed = initialSpeed;
 let gameInterval;
 let isAIEnabled = false;  // Track AI mode
 
-// Resize canvas to fit within viewport, leaving space for the footer
+// Resize canvas to fill the screen area between navbar and footer with exact placement
 function resizeCanvas() {
-    const width = Math.min(window.innerWidth - 20, 600);
-    const height = Math.min(window.innerHeight - 100, 500);  // Leave space for footer
+    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+    const footerHeight = footer ? footer.offsetHeight : 0;
+
+    // Set the height and width of the canvas based on the available window dimensions
+    const width = window.innerWidth;
+    const height = window.innerHeight - navbarHeight - footerHeight;
+    
+    // Adjust canvas size
     canvas.width = width;
     canvas.height = height;
-    gridSize = Math.floor(Math.min(canvas.width, canvas.height) / 40);  // Ensure consistent grid size
+    gridSize = Math.floor(Math.min(width, height) / 40);
+    
+    // Position the canvas below the navbar
+    canvas.style.position = "absolute";
+    canvas.style.top = `${navbarHeight}px`;
+    canvas.style.bottom = `${footerHeight}px`;
+    canvas.style.left = "0px";
+
+    // Position and center the floating buttons
+    aiToggleButton.style.position = "relative";
+    aiToggleButton.style.bottom = "auto";
+    aiToggleButton.style.left = "auto";
+    aiToggleButton.style.transform = "none";
+    
+    restartButton.style.position = "relative";
+    restartButton.style.bottom = "auto";
+    restartButton.style.left = "auto";
+    restartButton.style.transform = "none";
+
 }
 
 // Initialize game settings and elements without triggering resizeCanvas
@@ -83,7 +109,7 @@ function moveSnake() {
 
     if (checkCollision()) {
         clearInterval(gameInterval);
-        alert("Snek died :(");
+        alert("snek died :(");
         checkAndUpdateHighScore();  // Check if high score needs updating
         initializeGame();
         startGame();
