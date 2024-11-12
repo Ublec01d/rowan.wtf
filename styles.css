@@ -313,7 +313,7 @@ button#addButton:hover {
 }
 
 #snake-game {
-    border: 2px solid lime;
+  /*  border: 2px solid lime;
     background-color: #000;  /* Set background to black */
 }
 
@@ -323,24 +323,13 @@ button#addButton:hover {
     font-size: 20px;
 }
 
-#restart-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: black;
-    color: lime;
-    border: none;
-    cursor: pointer;
+#toggle-mode-button, #restart-button {
+    background-color: transparent; /* No background */
+    border: none; /* No border */
+    color: #32CD32; /* Lime green color to match the rest */
+    font-size: inherit; /* Keeps the font size consistent */
+    cursor: pointer; /* Ensures it appears clickable */
 }
 
-#restart-button:hover {
-    background-color: #005f73;
-}
 
-#toggle-mode-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: black;
-    color: lime;
-    border: none;
-    cursor: pointer;
-}
+
