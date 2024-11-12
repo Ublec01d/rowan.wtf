@@ -1,4 +1,6 @@
 
+import { aiMakeMove } from './snakeAI.js';
+
 const canvas = document.getElementById('snake-game');
 const ctx = canvas.getContext('2d');
 const aiToggleButton = document.getElementById('toggle-mode-button');
@@ -65,7 +67,7 @@ function updateScore() {
 // Move the snake based on direction or AI logic
 function moveSnake() {
     if (isAIEnabled) {
-        aiMakeMove();
+        direction = aiMakeMove(snake, food, direction, gridSize, canvas.width, canvas.height);
     }
     const head = { x: snake[0].x + direction.x * gridSize, y: snake[0].y + direction.y * gridSize };
     snake.unshift(head);
@@ -81,22 +83,11 @@ function moveSnake() {
 
     if (checkCollision()) {
         clearInterval(gameInterval);
-        alert("Game Over");
+        alert("Snek died :(");
         checkAndUpdateHighScore();  // Check if high score needs updating
         initializeGame();
         startGame();
     }
-}
-
-// AI logic to move snake toward food
-function aiMakeMove() {
-    const head = snake[0];
-    direction = { x: 0, y: 0 };
-
-    if (food.x > head.x) direction.x = 1;  // Move right
-    else if (food.x < head.x) direction.x = -1;  // Move left
-    else if (food.y > head.y) direction.y = 1;  // Move down
-    else if (food.y < head.y) direction.y = -1;  // Move up
 }
 
 // Check for wall or self-collision
@@ -114,9 +105,23 @@ function checkCollision() {
 // Draw the game elements (snake and food)
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "lime";
-    snake.forEach(segment => ctx.fillRect(segment.x, segment.y, gridSize, gridSize));
-    ctx.fillStyle = "red";
+
+    // Set color for the snake's head (darker green for the head, lighter for the body)
+    const headColor = '#006400';  // Dark green for head
+    const bodyColor = '#32CD32';  // Lime green for body
+
+    // Draw the head
+    ctx.fillStyle = headColor;
+    ctx.fillRect(snake[0].x, snake[0].y, gridSize, gridSize);
+
+    // Draw the rest of the body
+    ctx.fillStyle = bodyColor;
+    for (let i = 1; i < snake.length; i++) {
+        ctx.fillRect(snake[i].x, snake[i].y, gridSize, gridSize);
+    }
+
+    // Draw the food in red
+    ctx.fillStyle = '#FF0000';
     ctx.fillRect(food.x, food.y, gridSize, gridSize);
 }
 
