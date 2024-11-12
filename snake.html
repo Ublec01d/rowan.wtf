@@ -81,18 +81,20 @@ window.updateHighScoreInFirebase = updateHighScoreInFirebase;
     <div id="high-score">High Score: 0</div>
     <div class="snake-game-container">
         <canvas id="snake-game"></canvas>
-        <div id="score-counter">bits: 0</div>
         <button id="restart-button" style="display: none;">Restart</button>
     </div>
+    <div id="score-counter">bits: 0</div>
     <button id="toggle-mode-button">Switch to AI Mode</button>
 
     <img src="images/flipper.gif" width="50">
     <!-- Footer with more marquee and GIFs -->
-    <footer>
-        <marquee scrollamount="20">© 1996 Ublec01d.com All rights reserved. | <a href="images/syserr3.gif" target="/">
-            <img src="images/secure02.gif" alt="Security">
-        </a> U2VjcmV0cyBhbGwgb3ZlciB0aGUgcGxhY2Uh </marquee>
-    </footer>
+    <div id="footer">
+        <footer>
+            <marquee scrollamount="20">© 1996 Ublec01d.com All rights reserved. | <a href="images/syserr3.gif" target="/">
+                <img src="images/secure02.gif" alt="Security">
+            </a> U2VjcmV0cyBhbGwgb3ZlciB0aGUgcGxhY2Uh </marquee>
+        </footer>
+    </div>
 
     <!-- Your snake game JavaScript (ensure it's also using module syntax) -->
     <script type="module" src="snake.js"></script>
