@@ -5,7 +5,7 @@ const aiToggleButton = document.getElementById('toggle-mode-button');
 
 // Global game variables
 let gridSize, snake, direction, food, score, highScore = 0;
-const initialSpeed = 200;
+let initialSpeed = 200;
 let speed = initialSpeed;
 let gameInterval;
 let isAIEnabled = false;  // Track AI mode
@@ -26,6 +26,7 @@ function initializeGame() {
     direction = { x: 0, y: 0 };
     food = generateRandomPosition();
     score = 0;
+    speed = initialSpeed;  // Reset speed to initial value on game restart
     updateScore();
     fetchHighScoreFromFirebase();  // Fetch the high score on load
 }
@@ -70,16 +71,17 @@ function moveSnake() {
     snake.unshift(head);
     if (head.x === food.x && head.y === food.y) {
         score++;
-        speed = Math.max(50, speed * 0.95);  // Increase speed slightly
+        speed = Math.max(1, speed * 0.95);  // Increase speed by reducing interval, no ceiling
         food = generateRandomPosition();
         updateScore();
+        restartGameLoop();  // Restart the game loop to apply new speed
     } else {
         snake.pop();  // Remove last segment if no food eaten
     }
 
     if (checkCollision()) {
         clearInterval(gameInterval);
-        alert("Snek ded :(");
+        alert("Game Over");
         checkAndUpdateHighScore();  // Check if high score needs updating
         initializeGame();
         startGame();
@@ -118,6 +120,12 @@ function drawGame() {
     ctx.fillRect(food.x, food.y, gridSize, gridSize);
 }
 
+// Restart the game loop with updated speed
+function restartGameLoop() {
+    clearInterval(gameInterval);
+    gameInterval = setInterval(gameLoop, speed);
+}
+
 // Game loop
 function gameLoop() {
     moveSnake();
@@ -126,8 +134,7 @@ function gameLoop() {
 
 // Start the game loop with set interval
 function startGame() {
-    clearInterval(gameInterval);  // Clear any existing interval
-    gameInterval = setInterval(gameLoop, speed);
+    restartGameLoop();  // Start the game loop
 }
 
 // Handle keyboard and touch controls
