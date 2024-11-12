@@ -11,7 +11,7 @@ trayIconCommand = "powershell -windowstyle hidden -command ""[reflection.assembl
                    "$notify.visible = $true; " & _
                    "$notify.text = 'nosleep.vbs - keeps your PC awake'; " & _
                    "$menu = New-Object System.Windows.Forms.ContextMenu; " & _
-                   "$exitItem = New-Object System.Windows.Forms.MenuItem 'Quit program for some reason ¯\_(ツ)_/¯'; " & _
+                   "$exitItem = New-Object System.Windows.Forms.MenuItem 'Exit nosleep.vbs'; " & _
                    "$menu.MenuItems.Add($exitItem); " & _
                    "$notify.ContextMenu = $menu; " & _
                    "$exitItem.add_Click({ $notify.visible = $false; [System.Windows.Forms.Application]::Exit(); Stop-Process -Name 'wscript' -Force }); " & _
