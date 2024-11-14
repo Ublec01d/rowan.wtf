@@ -109,7 +109,7 @@ function moveSnake() {
 
     if (checkCollision()) {
         clearInterval(gameInterval);
-        alert("snek died :(");
+        alert(`snek died :( You ate ${score} bits`);
         checkAndUpdateHighScore();  // Check if high score needs updating
         initializeGame();
         startGame();
