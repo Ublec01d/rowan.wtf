@@ -2,6 +2,7 @@
 
 let speed = 100; // Initial speed in milliseconds
 let rounds = 0; // Track the number of rounds
+let score = 0; // Track the score
 
 function aiMakeMove(snake, food, direction, gridSize, canvasWidth, canvasHeight) {
     const path = findPathAStar(snake, food, gridSize, canvasWidth, canvasHeight);
@@ -40,6 +41,7 @@ function findPathAStar(snake, food, gridSize, canvasWidth, canvasHeight) {
         if (currentNode.position.x === food.x && currentNode.position.y === food.y) {
             console.log("Food reached by A* pathfinding.");
             increaseSpeed();
+            score++;
             return reconstructPath(currentNode, gridSize);
         }
 
@@ -93,8 +95,10 @@ function increaseSpeed() {
     rounds++;
     if (rounds <= 20) {
         speed *= 0.9; // Increase speed by reducing delay by 10% each round for the first 20 rounds
+    } else if (rounds <= 60) {
+        speed *= 0.95; // After 20 rounds, continue to gradually increase speed by reducing delay by 5% each round until 60 rounds
     } else {
-        speed *= 0.95; // After 20 rounds, continue to gradually increase speed by reducing delay by 5% each round
+        speed *= 0.98; // After 60 rounds, gradually increase speed by reducing delay by 2% each round
     }
     speed = Math.max(20, speed); // Ensure speed does not go below a 20ms delay
 }
@@ -185,4 +189,9 @@ function isSafePosition(position, snake, canvasWidth, canvasHeight) {
     return true;
 }
 
-export { aiMakeMove, isSafePosition };
+// Function to handle when the snake dies
+function snakeDied() {
+    alert(`Snek died :( Your score was: ${score}`);
+}
+
+export { aiMakeMove, isSafePosition, snakeDied };
