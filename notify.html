@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Notification</title>
+</head>
+<body>
+    <h1>Notification Demo</h1>
+    <button id="notifyButton">Send Notification</button>
+
+    <script>
+        // Check and request notification permission
+        async function ensureNotificationPermission() {
+            if (Notification.permission === "default") {
+                const permission = await Notification.requestPermission();
+                if (permission === "granted") {
+                    console.log("Notifications enabled!");
+                    return true;
+                } else {
+                    console.error("Notifications denied or dismissed!");
+                    alert("Please enable notifications to proceed.");
+                    return false;
+                }
+            } else if (Notification.permission === "granted") {
+                return true;
+            } else {
+                console.error("Notifications are blocked in your browser.");
+                alert("Notifications are blocked in your browser settings. Please unblock them to use this feature.");
+                return false;
+            }
+        }
+
+        // Send the notification
+        async function sendNotification() {
+            const permissionGranted = await ensureNotificationPermission();
+            if (permissionGranted) {
+                new Notification("Hello!", {
+                    body: "This is a Windows notification from your browser.",
+                    icon: "https://via.placeholder.com/64" // Optional: Replace with your icon URL
+                });
+            }
+        }
+
+        document.getElementById("notifyButton").addEventListener("click", sendNotification);
+
+        // Debug: Check permission state on page load
+        window.onload = () => {
+            console.log("Notification permission status:", Notification.permission);
+        };
+    </script>
+</body>
+</html>
