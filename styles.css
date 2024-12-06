@@ -312,10 +312,6 @@ button#addButton:hover {
     height: 100vh;
 }
 
-#snake-game {
-  /*  border: 2px solid lime;
-    background-color: #000;  /* Set background to black */
-}
 
 #score-counter {
     color: #fff;  /* White text for contrast */
@@ -333,3 +329,30 @@ button#addButton:hover {
 
 
 
+/* Converter styles*/
+
+.converter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: auto;
+}
+
+label {
+    text-align: left;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid lime;
+    border-radius: 4px;
+    background-color: black;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+}
+
+input:focus {
+    outline: none;
+    border-color: red;
+}
