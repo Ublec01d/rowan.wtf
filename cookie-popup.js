@@ -14,7 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(popup);
 
     // Check cookie consent
-    if (!localStorage.getItem("cookieConsent")) {
+    const cookieConsent = localStorage.getItem("cookieConsent");
+
+    if (cookieConsent === "declined") {
+        // Redirect to the error page if cookies were previously declined
+        window.location.href = "/error.html";
+    } else if (!cookieConsent) {
+        // Show popup if consent has not been given
         popup.style.display = "flex";
     }
 
