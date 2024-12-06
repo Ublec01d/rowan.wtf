@@ -356,3 +356,51 @@ input:focus {
     outline: none;
     border-color: red;
 }
+
+/*Cookie popup styles*/
+
+#cookie-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: lime;
+    border: 2px solid lime;
+    padding: 15px;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Courier New", Courier, monospace;
+    max-width: 90%;
+    box-shadow: 0px 0px 10px lime;
+}
+
+.cookie-content p {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.cookie-buttons button {
+    background-color: lime;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+}
+
+.cookie-buttons button:hover {
+    background-color: black;
+    color: lime;
+    border: 1px solid lime;
+}
