@@ -43,17 +43,35 @@
             <p><img src="images/portal.gif" alt="portal"> </p>
             <p><strong>Jump to:</strong></p>
             <ul>
+                <li><a href="#converter">Converter</a></li>
                 <li><a href="#scripts">scripts</a></li>
                 <li><a href="#infodump">infodump</a></li>
             </ul>
             <br>
           <br>
+
+
+          <!-- Section for converter-->
+          <p id="converter"><img src="images/coin.gif" alt="Skull"> <strong>Number System Converter</strong> <img src="images/coin.gif" alt="Skull"></p>
+          <div class="converter">
+              <label for="decimal">Decimal:</label>
+              <input type="number" id="decimal" oninput="convert('decimal')">
+      
+              <label for="binary">Binary:</label>
+              <input type="text" id="binary" oninput="convert('binary')">
+      
+              <label for="octal">Octal:</label>
+              <input type="text" id="octal" oninput="convert('octal')">
+      
+              <label for="hexadecimal">Hexadecimal:</label>
+              <input type="text" id="hexadecimal" oninput="convert('hexadecimal')">
+          </div>
           <br>
           <br>
           <br>
           <br>
           <br>
-          <br>
+          <br>          
           <br>
           <br>
           <br>
@@ -235,6 +253,7 @@ There's nothing here yet :(
     <script src="firebaseapp.js"></script>
     <script src="banner.js"></script>
     <script src="copyScript.js"></script>
+    <script src="conv.js"></script>
 
 </body>
 </html>
