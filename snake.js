@@ -90,7 +90,7 @@ function moveSnake() {
     snake.unshift(head);
     if (head.x === food.x && head.y === food.y) {
         score++;
-        speed = Math.max(1, speed * 0.95);
+        adjustSpeed();
         food = generateRandomPosition();
         updateScore();
         restartGameLoop();
@@ -108,6 +108,16 @@ function moveSnake() {
         }
         initializeGame();
         startGame();
+    }
+}
+
+function adjustSpeed() {
+    if (score <= 30) {
+        speed *= 0.95; // 5% speed increase per bit until 50 bits
+    } else if (score <= 100) {
+        speed *= 0.98; // 2% speed increase per bit from 50 to 100 bits
+    } else if (score % 10 === 0) {
+        speed *= 0.99; // 1% speed increase every 10 bits after 100 bits
     }
 }
 
