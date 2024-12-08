@@ -5,12 +5,12 @@ You can contact me through the discussions section.
 
 Current functions:
 
-- list egress ip address
-- list tools
-- list links
+- show egress ip address
+- tools
+- links
 - projects:
   - numbers converter
-  - list scripts
+  - scripts
   - infodump
 - snake game (now with AI mode!)
 - secrets?
