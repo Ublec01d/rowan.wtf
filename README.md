@@ -17,6 +17,6 @@ Current functions:
 
 Future functions:
 
-- ?
+- send notifications (/notify.html)
 - ??
 - ???
