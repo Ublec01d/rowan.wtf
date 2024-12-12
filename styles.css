@@ -75,7 +75,7 @@ ul li {
 
 #main-title {
     font-size: 2.5em; /* Adjusted for better scaling */
-    color: red;
+    color: lime;
     text-shadow: 2px 2px 4px #000000;
     margin: 20px 0;
 }
@@ -403,4 +403,27 @@ input:focus {
     background-color: black;
     color: lime;
     border: 1px solid lime;
+}
+
+
+ul li a {
+    color: grey;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.3em; /* Slightly larger text for emphasis */
+    
+}
+
+ul li a:hover {
+    color: black;
+    background-color: lime; /* Inverse hover effect */
+    padding: 2px 4px; /* Add padding for a button-like feel */
+    border-radius: 4px; /* Rounded corners */
+    transition: all 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+
+p {
+    color: lime;
+    font-size:  1.5em;
 }
