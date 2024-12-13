@@ -207,7 +207,8 @@ function setupControls() {
         e.preventDefault();
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
-    });
+    }, { passive: false });
+
     canvas.addEventListener('touchmove', (e) => {
         e.preventDefault();
         const deltaX = e.touches[0].clientX - touchStartX;
@@ -219,8 +220,9 @@ function setupControls() {
             if (deltaY > 0 && direction.y === 0) direction = { x: 0, y: 1 };
             else if (deltaY < 0 && direction.y === 0) direction = { x: 0, y: -1 };
         }
-    });
+    }, { passive: false });
 }
+
 
 aiToggleButton.addEventListener('click', () => {
     isAIEnabled = !isAIEnabled;
