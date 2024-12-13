@@ -106,10 +106,21 @@ function checkAndUpdateHighScore() {
 }
 
 function generateRandomPosition() {
-    const x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
-    const y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
-    return { x, y };
+    let position;
+    let isColliding;
+
+    do {
+        const x = Math.floor(Math.random() * (canvas.width / gridSize)) * gridSize;
+        const y = Math.floor(Math.random() * (canvas.height / gridSize)) * gridSize;
+        position = { x, y };
+
+        // Check if the position collides with the snake's body
+        isColliding = snake.some(segment => segment.x === position.x && segment.y === position.y);
+    } while (isColliding);
+
+    return position;
 }
+
 
 function updateScore() {
     document.getElementById('score-counter').textContent = `bits: ${score}`;
