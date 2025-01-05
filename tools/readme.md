@@ -1,6 +1,7 @@
-Tools are for educational puposes only!
+Tools are for educational puposes only!<br>
 Don't do dumb things.
-
+<br>
+<br>
 To verify the integrity of the file you downloaded, you can veriify the sha256 hash by comparing it with the list below:
                                                          
 autotype            
@@ -16,4 +17,5 @@ Knowledgeiskey<br>
 Knowledgeisarmed<br>
 CFE3252A28D828074E2A01BCCC27A240A15B7D479AF0751FA91A3D89046E115D<br><br>
 
+<br>
 To check the hash simply open powershell and use: Get-FileHash .\Application.exe
