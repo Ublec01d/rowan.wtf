@@ -17,14 +17,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function askPassword() {
-    var a = 10 + 35 + 38 + 69 + 100; // this could also be found on my website if you tried.. maybe you'll find where it's hidden with this hint.
-    var w8w = prompt("Enter code: XXX ");
+    var short = "MjUy";
+    var src = "aHR0cHM6Ly9naXRodWIuY29tL1VibGVjMDFkL3Rlc3Qtd2Vic2l0ZQ==";
+    var a = atob(short);
+    var dest = atob(src);
 
+    // Prompt user for the code
+    var cod = prompt("Enter code: XXX ");
 
-    if (w8w === a.toString()) {
-        window.location.href = "https://github.com/Ublec01d/test-website"; // target URL
+    if (cod === a) {
+        window.location.href = dest;
     } else {
-        alert("INCORRECT CODE! it doesn't add up.. ಠ_ಠ ");
+        alert("INCORRECT CODE! it doesn't add up.."); // alert for incorrect code and hint to adding certain numbers together.. ;)
     }
 }
-
