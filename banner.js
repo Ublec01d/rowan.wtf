@@ -24,7 +24,7 @@ function askPassword() {
     if (w8w === a.toString()) {
         window.location.href = "https://github.com/Ublec01d/test-website"; // target URL
     } else {
-        alert("INCORRECT CODE! ...who are you?.. ಠ_ಠ ");
+        alert("INCORRECT CODE! it doesn't add up.. ಠ_ಠ ");
     }
 }
 
