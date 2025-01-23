@@ -10,6 +10,7 @@ Current functions:
 - links
 - projects:
   - numbers converter
+  - subnetting quiz
   - scripts
   - infodump
 - snake game (now with AI mode!)
@@ -18,5 +19,7 @@ Current functions:
 Future functions:
 
 - send notifications (/notify.html)
+- Add more games
+- Improve on existing funtions
 - ??
 - ???
