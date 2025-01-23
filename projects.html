@@ -70,12 +70,34 @@
           <br>
           <br>
           <br>
-          <br>
-          <br>          
-          <br>
-          <br>
-          <br>
-          <br>
+
+
+           <!-- Subnetting Quiz Section -->
+           <p id="quiz-container"><img src="images/coin.gif" alt="Skull"> <strong>Subnetting Quiz</strong> <img src="images/coin.gif" alt="Skull"></p>
+           <div class="question" id="question">Loading question...</div>
+         <br>
+         <br>
+           <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+               <input type="text" id="subnetMaskAnswer" placeholder="Subnet mask">
+
+               <input type="text" id="totalAddressesAnswer" placeholder="Number of addresses">
+
+               <input type="text" id="networkAddressAnswer" placeholder="Network address">
+
+               <input type="text" id="broadcastAddressAnswer" placeholder="Broadcast address">
+
+           </div>
+           <br>
+           <button onclick="checkAnswer()">Submit</button>
+           <div class="result" id="result"></div>
+       </div>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>
+       <br>          
+
 
             <!-- Section for scripts -->
             <p id="scripts"><img src="images/coin.gif" alt="Skull"> <strong>scripts</strong> <img src="images/coin.gif" alt="Skull"></p>
@@ -250,6 +272,7 @@ There's nothing here yet :(
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
+    <script src="subn.js"></script>
     <script src="firebaseapp.js"></script>
     <script src="banner.js"></script>
     <script src="copyScript.js"></script>
