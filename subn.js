@@ -66,7 +66,7 @@ function ipToBinary(ip) {
     setTimeout(() => {
       document.getElementById('result').textContent = '';
       generateQuestion();
-    }, 3000);
+    }, 10000);
   }
   
   // Variables for correct answers
