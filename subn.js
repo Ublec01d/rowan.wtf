@@ -60,7 +60,7 @@ function ipToBinary(ip) {
       document.getElementById('result').textContent = '✅ Correct!';
       document.getElementById('result').style.color = 'lime';
     } else {
-      document.getElementById('result').textContent = `❌ Incorrect! Correct answers: Subnet Mask: ${correctSubnetMask}, Total Addresses: ${correctTotalAddresses}, Network Address: ${correctNetworkAddress}, Broadcast Address: ${correctBroadcastAddress}`;
+      document.getElementById('result').textContent = `❌ Incorrect! Correct answers: Subnet Mask: ${correctSubnetMask}, Total num of Hosts: ${correctTotalAddresses}, Network Address: ${correctNetworkAddress}, Broadcast Address: ${correctBroadcastAddress}`;
       document.getElementById('result').style.color = 'red';
     }
     setTimeout(() => {
