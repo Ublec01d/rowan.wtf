@@ -28,6 +28,6 @@ function askPassword() {
     if (cod === a) {
         window.location.href = dest;
     } else {
-        alert("INCORRECT CODE! it doesn't add up.."); // alert for incorrect code and hint to adding certain numbers together.. ;)
+        alert("INCORRECT CODE!"); // alert for incorrect code
     }
 }
