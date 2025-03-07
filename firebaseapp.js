@@ -1,73 +1,86 @@
-
 //  Firebase initialization and script -->
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyBgu0JwZdclSeM9W-7cGjcs7dfxUu23930",
-        authDomain: "ublec01d-b32bb.firebaseapp.com",
-        databaseURL: "https://ublec01d-b32bb-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "ublec01d-b32bb",
-        storageBucket: "ublec01d-b32bb.appspot.com",
-        messagingSenderId: "695529528296",
-        appId: "1:695529528296:web:3e34619f95fdac1fcf625d",
-        measurementId: "G-E1DCHYQ91Z"
-    };
+document.addEventListener("DOMContentLoaded", function () {
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBgu0JwZdclSeM9W-7cGjcs7dfxUu23930",
+    authDomain: "ublec01d-b32bb.firebaseapp.com",
+    databaseURL:
+      "https://ublec01d-b32bb-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ublec01d-b32bb",
+    storageBucket: "ublec01d-b32bb.appspot.com",
+    messagingSenderId: "695529528296",
+    appId: "1:695529528296:web:3e34619f95fdac1fcf625d",
+    measurementId: "G-E1DCHYQ91Z",
+  };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
 
-    // Initialize Firebase Authentication
-    firebase.auth().signInAnonymously()
+  // Initialize Firebase Authentication
+  firebase
+    .auth()
+    .signInAnonymously()
     .then(() => {
-    console.log("User signed in anonymously");
+      console.log("User signed in anonymously");
     })
     .catch((error) => {
-    console.error("Error signing in:", error);
+      console.error("Error signing in:", error);
     });
 
-    // Add event listener for adding text
-    document.getElementById("addButton").addEventListener("click", function() {
-        addText();
-    });
+  // Add event listener for adding text
+  document.getElementById("addButton").addEventListener("click", function () {
+    addText();
+  });
 
-    // Function to add text to Firebase Realtime Database
-    function addText() {
-        const userInput = document.getElementById("inputBox").value;
-        if (!userInput.trim()) return; // Skip empty input
+  // Function to add text to Firebase Realtime Database
+  function addText() {
+    const userInput = document.getElementById("inputBox").value;
+    if (!userInput.trim()) return; // Skip empty input
 
-        // Push to Firebase Database
-        database.ref('texts').push({
-            text: userInput
-        }, function(error) {
-            if (error) {
-                console.error("Error adding text:", error);
-            } else {
-                document.getElementById("inputBox").value = ''; // Clear input field
-                loadText(); // Refresh displayed texts
-            }
-        });
+    // Push to Firebase Database
+    let count = 0;
+    while (count < 10) {
+      database.ref("texts").push(
+        {
+          text: userInput,
+        },
+        function (error) {
+          if (error) {
+            console.error("Error adding text:", error);
+          } else {
+            document.getElementById("inputBox").value = ""; // Clear input field
+            loadText(); // Refresh displayed texts
+          }
+        }
+      );
+      count++;
     }
+  }
 
-    // Function to load stored texts from Firebase Realtime Database
-    function loadText() {
-        const displayText = document.getElementById("displayText");
-        displayText.innerHTML = ''; // Clear current content
+  // Function to load stored texts from Firebase Realtime Database
+  function loadText() {
+    const displayText = document.getElementById("displayText");
+    displayText.innerHTML = ""; // Clear current content
 
-        // Retrieve data from Firebase
-        database.ref('texts').once('value', function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                const childData = childSnapshot.val();
-                const newText = document.createElement("p");
-                newText.textContent = childData.text;
-                displayText.appendChild(newText);
-            });
-        }, function(error) {
-            console.error("Error loading texts:", error);
+    // Retrieve data from Firebase
+    database.ref("texts").once(
+      "value",
+      function (snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+          const childData = childSnapshot.val();
+          const newText = document.createElement("p");
+          newText.textContent = childData.text;
+          displayText.appendChild(newText);
         });
-    }
+      },
+      function (error) {
+        console.error("Error loading texts:", error);
+      }
+    );
+  }
 
-    // Load the texts when the page is loaded
-    loadText();
+  // Load the texts when the page is loaded
+  loadText();
 });
