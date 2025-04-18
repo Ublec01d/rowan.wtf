@@ -453,3 +453,26 @@ p {
     color: lime;
     font-size:  1.5em;
 }
+
+/* Fullscreen image overlay */
+.image-overlay {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+}
+
+.image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    border: 2px solid lime;
+    box-shadow: 0 0 15px lime;
+    object-fit: contain;
+    cursor: pointer;
+}
