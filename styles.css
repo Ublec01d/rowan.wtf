@@ -483,3 +483,44 @@ p {
     object-fit: contain;
     cursor: pointer;
 }
+
+/* Floating portal image */
+#scrollPortal {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    width: 60px;
+    height: auto;
+    z-index: 999;
+    cursor: url('images/rockhand.cur'), pointer;
+    display: none;
+}
+
+#scrollPortal {
+    transition: transform 0.3s ease;
+}
+
+#scrollPortal:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.dump-box {
+    background-color: black;
+    border: 1px solid lime;
+    padding: 10px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 600px;
+    box-sizing: border-box;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    #inputBox {
+        width: 95% !important;
+    }
+}
