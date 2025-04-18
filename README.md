@@ -12,6 +12,7 @@ Current functions:
   - numbers converter
   - subnetting quiz
   - scripts
+  - kalipi
   - infodump
 - snake game (now with AI mode!)
 - secrets?
@@ -19,7 +20,8 @@ Current functions:
 Future functions:
 
 - send notifications (/notify.html)
-- Add more games
-- Improve on existing funtions
+- add more games
+- add more tools
+- improve on existing funtions
 - ??
 - ???
