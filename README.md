@@ -6,15 +6,16 @@ You can contact me through the discussions section.
 Current functions:
 
 - show egress ip address
-- tools
 - links
+- tools
 - projects:
   - numbers converter
   - subnetting quiz
   - scripts
+  - hackpi
   - kalipi
-  - infodump
 - snake game (now with AI mode!)
+- public infodump
 - secrets?
 
 Future functions:
