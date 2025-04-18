@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", function() {
     console.error("Error signing in:", error);
     });
 
+    let lastPasteTime = 0;
+
     // Add event listener for adding text
     document.getElementById("addButton").addEventListener("click", function() {
         addText();
@@ -35,20 +37,27 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to add text to Firebase Realtime Database
     function addText() {
         const userInput = document.getElementById("inputBox").value;
-        if (!userInput.trim()) return; // Skip empty input
-
-        // Push to Firebase Database
+        if (!userInput.trim()) return;
+    
+        const now = Date.now();
+        if (now - lastPasteTime < 5000) {
+            alert("Please wait a few seconds before submitting again.");
+            return;
+        }
+        lastPasteTime = now;
+    
         database.ref('texts').push({
             text: userInput
         }, function(error) {
             if (error) {
                 console.error("Error adding text:", error);
             } else {
-                document.getElementById("inputBox").value = ''; // Clear input field
-                loadText(); // Refresh displayed texts
+                document.getElementById("inputBox").value = '';
+                loadText();
             }
         });
     }
+    
 
     // Function to load stored texts from Firebase Realtime Database
     function loadText() {
