@@ -1,3 +1,509 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;  /* Prevent horizontal scrolling */
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+    text-align: center;
+    zoom: 100%;  /* Set zoom level to 100% */
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: black; /* Track color to match the background */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: lime; /* Thumb color */
+    border-radius: 10px;    /* Rounded corners */
+    border: 2px solid black; /* Border around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: red; /* Color on hover */
+}
+
+/* Applies to Firefox (doesn't support WebKit scrollbars) */
+body {
+    scrollbar-color: lime black; /* Thumb and track colors */
+    scrollbar-width: thin;       /* Thin scrollbar */
+}
+
+/* Custom cursor for links and buttons */
+a:hover, button:hover, .copy-btn:hover, .banner-link:hover {
+    cursor: url('images/rockhand.cur'), pointer; /* Change cursor on hover */
+}
+
+/* Other button styles */
+button#addButton:hover {
+    background-color: black;
+    color: lime;
+    border: 2px solid lime; /* Add a border on hover for effect */
+}
+
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0 auto; /* Center the list container */
+    text-align: center; /* Center text within list items */
+}
+
+ul li {
+    margin-bottom: 10px; /* Optional: Adds space between each list item */
+}
+
+
+.wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#construction-banner {
+    background-color: yellow;
+    padding: 10px;
+}
+
+#main-title {
+    font-size: 2.5em; /* Adjusted for better scaling */
+    color: lime;
+    text-shadow: 2px 2px 4px #000000;
+    margin: 20px 0;
+}
+
+#navbar {
+    background-color: #333;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    display: inline-block; /* Ensure links are on the same line */
+}
+
+#navbar a:hover {
+    background-color: lime;
+    color: black;
+}
+
+#content {
+    padding: 20px;
+    flex-grow: 1; /* Ensures the content area grows to fill available space */
+}
+
+/* Lengthy Bottom Spacer */
+.bottom-space {
+    margin-bottom: 10000px; /* Adjust the value as needed */
+}
+
+footer {
+    background-color: #222;
+    padding: 10px;
+    font-size: 0.75em; /* Adjusted for better scaling */
+    color: gray;
+    width: 100%;
+}
+
+#gif-container {
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    display: none; /* Initially hidden */
+    z-index: 1000; /* Ensure it's above other content */
+    white-space: nowrap; /* Keep GIFs in a single line, no wrapping */
+    overflow: hidden; /* Prevent overflow */
+}
+
+#gif-container img {
+    display: inline-block;
+    max-width: 1000px; /* Set maximum width to ensure it fits on smaller screens */
+    height: auto;
+    margin: 0 5px; /* Add margin for spacing between GIFs */
+}
+
+#second-gif {
+    /* Full screen styling */
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    width: 1000vw;
+    height: 1000vh;
+    object-fit: cover;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+    #main-title {
+        font-size: 1.4em; /* Smaller font size for mobile */
+    }
+
+    #navbar {
+        padding: 5px;
+    }
+
+    #navbar a {
+        padding: 3px 5px;
+        font-size: 0.4em;
+    }
+
+    #content {
+        padding: 10px;
+    }
+
+    footer {
+        font-size: 0.65em; /* Smaller font size for mobile */
+    }
+
+    #gif-container img {
+        max-width: 400px; /* Smaller maximum width for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    #main-title {
+        font-size: 1em; /* Even smaller font size for very small screens */
+    }
+
+    #navbar {
+        padding: 5px;
+    }
+
+    #navbar a {
+        display: block;
+        margin: 5px 0;
+        font-size: 0.8em;
+    }
+
+    #gif-container {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    #gif-container img {
+        max-width: 500px; /* Even smaller maximum width for very small screens */
+    }
+}
+
+/* Input Box Styling */
+input#inputBox {
+    width: 50%; /* Set width to 50% of the parent container */
+    padding: 10px; /* Add some padding for better appearance */
+    margin: 10px auto; /* Center the input box */
+    border: 2px solid lime; /* Add a lime green border to match the theme */
+    background-color: black; /* Match background to page color */
+    color: lime; /* Match text color to the overall color scheme */
+    font-family: "Courier New", Courier, monospace; /* Use the same font */
+    font-size: 1em; /* Adjust font size */
+    display: block; /* Ensure the input box takes up a full block */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+/* Button Styling */
+button#addButton {
+    background-color: lime;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: "Courier New", Courier, monospace; /* Match font style */
+    margin-top: 10px;
+    display: block;
+    margin: 0 auto; /* Center the button */
+}
+
+button#addButton:hover {
+    background-color: black;
+    color: lime;
+    border: 2px solid lime; /* Add a border on hover for effect */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    input#inputBox {
+        width: 70%; /* Slightly wider for smaller screens */
+        font-size: 0.9em; /* Reduce font size */
+    }
+
+    button#addButton {
+        font-size: 0.9em; /* Adjust button font size */
+    }
+}
+
+@media (max-width: 480px) {
+    input#inputBox {
+        width: 90%; /* Make the input box nearly full width for very small screens */
+        font-size: 0.8em;
+    }
+
+    button#addButton {
+        font-size: 0.8em;
+    }
+}
+
+/* Default (desktop/tablet) layout */
+.script-box {
+    background-color: black;
+    border: 0px solid lime;
+    padding: 10px;
+    margin: 20px auto;
+    width: 80%;             /* Wider on desktop */
+    max-width: 800px;       /* Give it more breathing room */
+    text-align: left;
+    box-sizing: border-box;
+}
+
+/* For <pre> blocks site-wide */
+pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+    font-size: 1em;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid lime;
+    background-color: black;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+    margin: 10px auto;
+    text-align: left;
+}
+
+
+@media (max-width: 768px) {
+    .script-box {
+        width: 95%;          /* Tighter fit */
+        max-width: none;     /* Remove max width on mobile */
+    }
+
+    pre {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    pre {
+        font-size: 0.75em;
+    }
+}
+
+
+.copy-btn {
+    background-color: lime;
+    color: black;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    font-family: "Courier New", Courier, monospace;
+    float: right;
+}
+
+.copy-btn:hover {
+    background-color: black;
+    color: lime;
+    border: 1px solid lime;
+}
+
+
+.dump-box {
+    background-color: black;
+    border: 1px solid lime;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+    max-width: 60%;  /* Set maximum width to 50% */
+    text-align: center;
+    white-space: normal;  /* Allow normal text wrapping */
+    word-wrap: break-word;  /* Break long words to wrap */
+    overflow-wrap: break-word;  /* Break words when necessary */
+    overflow: auto;  /* scrollbars */
+}
+
+
+/* snake game */
+.snake-game-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+#score-counter {
+    color: #fff;  /* White text for contrast */
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+#toggle-mode-button, #restart-button {
+    background-color: transparent; /* No background */
+    border: none; /* No border */
+    color: #32CD32; /* Lime green color to match the rest */
+    font-size: inherit; /* Keeps the font size consistent */
+    cursor: pointer; /* Ensures it appears clickable */
+}
+
+
+
+/* Converter styles*/
+
+.converter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    margin: auto;
+}
+
+label {
+    text-align: left;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid lime;
+    border-radius: 4px;
+    background-color: black;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+}
+
+input:focus {
+    outline: none;
+    border-color: red;
+}
+
+/*Cookie popup styles*/
+
+#cookie-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: lime;
+    border: 2px solid lime;
+    padding: 15px;
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Courier New", Courier, monospace;
+    max-width: 90%;
+    box-shadow: 0px 0px 10px lime;
+}
+
+.cookie-content p {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.cookie-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.cookie-buttons button {
+    background-color: lime;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+}
+
+.cookie-buttons button:hover {
+    background-color: black;
+    color: lime;
+    border: 1px solid lime;
+}
+
+
+ul li a {
+    color: grey;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.3em; /* Slightly larger text for emphasis */
+    
+}
+
+ul li a:hover {
+    color: black;
+    background-color: lime; /* Inverse hover effect */
+    padding: 2px 4px; /* Add padding for a button-like feel */
+    border-radius: 4px; /* Rounded corners */
+    transition: all 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+
+p {
+    color: lime;
+    font-size:  1.5em;
+}
+
+/* Fullscreen image overlay */
+.image-overlay {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+}
+
+.image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    border: 2px solid lime;
+    box-shadow: 0 0 15px lime;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+/* Floating portal image */
+#scrollPortal {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    width: 60px;
+    height: auto;
+    z-index: 999;
+    cursor: url('images/rockhand.cur'), pointer;
+    display: none;
+}
+
+#scrollPortal {
+    transition: transform 0.3s ease;
+}
+
+#scrollPortal:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
 /* Default layout (desktop & wide screens) */
 .infodump-text {
     text-align: center;
@@ -50,3 +556,4 @@
         font-size: 0.9em;
     }
 }
+
