@@ -255,22 +255,23 @@ button#addButton:hover {
     }
 }
 
+/* Default (desktop/tablet) layout */
 .script-box {
     background-color: black;
     border: 0px solid lime;
     padding: 10px;
-    margin: 20px auto; /* This centers it */
-    width: 90%; /* Take up most of the width on small screens */
-    max-width: 600px; /* Prevents it from stretching too wide */
+    margin: 20px auto;
+    width: 80%;             /* Wider on desktop */
+    max-width: 800px;       /* Give it more breathing room */
     text-align: left;
     box-sizing: border-box;
 }
 
-/* Base styling for ALL <pre> blocks */
+/* For <pre> blocks site-wide */
 pre {
-    white-space: pre-wrap;        /* Wrap long lines */
-    word-break: break-word;       /* Break long words if needed */
-    overflow-x: auto;             /* Enable horizontal scroll if needed */
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
     font-size: 1em;
     max-width: 100%;
     box-sizing: border-box;
@@ -283,8 +284,13 @@ pre {
     text-align: left;
 }
 
-/* Mobile font scaling */
+
 @media (max-width: 768px) {
+    .script-box {
+        width: 95%;          /* Tighter fit */
+        max-width: none;     /* Remove max width on mobile */
+    }
+
     pre {
         font-size: 0.85em;
     }
@@ -295,6 +301,7 @@ pre {
         font-size: 0.75em;
     }
 }
+
 
 .copy-btn {
     background-color: lime;
