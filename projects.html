@@ -392,22 +392,25 @@ Configs:
     <script src="conv.js"></script>
     <script src="cookie-popup.js"></script>
     
-    <script>
-        // Handle image click
-        document.querySelectorAll("img").forEach(img => {
+<script>
+    // Attach click listener only to non-GIF images
+    document.querySelectorAll("img").forEach(img => {
+        if (!img.src.toLowerCase().endsWith(".gif")) {
             img.addEventListener("click", function () {
                 const overlay = document.getElementById("imageOverlay");
                 const overlayImg = document.getElementById("overlayImg");
-    
+
                 overlayImg.src = this.src;
                 overlay.style.display = "flex";
             });
-        });
-    
-        function hideImage() {
-            document.getElementById("imageOverlay").style.display = "none";
         }
-    </script>
+    });
+
+    function hideImage() {
+        document.getElementById("imageOverlay").style.display = "none";
+    }
+</script>
+
     
 
 </body>
