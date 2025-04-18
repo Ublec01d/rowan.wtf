@@ -524,3 +524,38 @@ p {
         width: 95% !important;
     }
 }
+
+.infodump-text {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 0 40px;
+}
+
+#inputBox {
+    width: 60%;
+    max-width: 500px;
+    padding: 10px;
+    margin: 10px auto;
+    display: block;
+    border: 2px solid lime;
+    background: black;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+}
+@media (max-width: 768px) {
+    .infodump-text {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    #inputBox {
+        width: 90%;
+        font-size: 0.9em;
+    }
+
+    .dump-box {
+        width: 95% !important;
+        font-size: 0.9em;
+    }
+}
