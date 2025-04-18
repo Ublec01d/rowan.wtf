@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YBXZ2PE747"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YBXZ2PE747');
+</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aW5mb2R1bXA=s</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!-- Navigation bar -->
+        <div id="navbar">
+            <a href="/">Home</a> | 
+            <a href="#" onclick="askPassword()">Tools</a> | 
+            <a href="#" id="change-text-link">links</a> | 
+            <a href="#" onclick="askPassword()">Contact</a>
+        </div>
+
+        <!-- Title with marquee -->
+        <p><img src="images/warning2.gif" alt="banner"></p>
+
+        <marquee style="color: yellow;" behavior="alternate" scrollamount="6">// // // under construction // // //</marquee>
+            
+        <h1 id="main-title" style="position: relative; left: 0px; top: 0px;">
+            - - I N F O D U M P - -
+        </h1>
+        
+
+            <!-- Section for Infodump -->
+            <p id="infodump"><img src="images/coin.gif" alt="Skull"> <strong>infodump</strong> <img src="images/coin.gif" alt="Skull"></p>
+            <ul>
+                <li>Just a bunch of information, open for anyone to add something, but I do moderate to some degree.</li>
+                <li>If you believe that any content posted here infringes upon your rights, please contact me to request removal.</li>
+                <br>
+                <br>
+
+                <li><strong>Add something to the pile:</strong></li>
+                <li>
+                    <input type="text" id="inputBox" placeholder="Input whatever..." style="width: 40%;">
+                    <button id="addButton">Dump</button>
+                </li>
+                <br>
+
+                <li><img src="images/flipper.gif" alt="Skull"> <strong>Dumped data:</strong> <img src="images/flipper.gif" alt="Skull"></li>
+                
+                <div class="dump-box">
+                    <li>
+                        <div id="displayText"></div>
+                    </li>
+                </div>
+                    
+            </ul>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+        </div>
+    </div>
+    <img src="images/flipper.gif" width="50">
+    <!-- Footer with more marquee and GIFs -->
+    <footer>
+        <marquee scrollamount="20">© 1996 Ublec01d.com All rights reserved. | <a href="images/syserr3.gif" target="/">
+            <img src="images/secure02.gif" alt="Security">
+        </a> U2VjcmV0cyBhbGwgb3ZlciB0aGUgcGxhY2Uh | Support my page by donating! doge: DLnyAa1tczPKDVHX4JYF4nCZKbzzz4XnSP btc: bc1qhlvc2apeqy55vlwfuz0tmslglmjdpj8kdez5c3</marquee> 
+    </footer>
+
+    <div id="imageOverlay" class="image-overlay" onclick="hideImage()">
+        <img id="overlayImg" src="" alt="Zoomed image">
+    </div>
+    
+
+    <!-- Firebase CDN Scripts (Version 8.x) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script src="subn.js"></script>
+    <script src="firebaseapp.js"></script>
+    <script src="banner.js"></script>
+    <script src="copyScript.js"></script>
+    <script src="conv.js"></script>
+    <script src="cookie-popup.js"></script>
+    
+    <script>
+        // Attach click listener only to non-GIF images
+        document.querySelectorAll("img").forEach(img => {
+            if (!img.src.toLowerCase().endsWith(".gif")) {
+                img.addEventListener("click", function () {
+                    const overlay = document.getElementById("imageOverlay");
+                    const overlayImg = document.getElementById("overlayImg");
+    
+                    overlayImg.src = this.src;
+                    overlay.style.display = "flex";
+                });
+            }
+        });
+    
+        function hideImage() {
+            document.getElementById("imageOverlay").style.display = "none";
+        }
+    </script>
+    
+    
+
+</body>
+</html>
