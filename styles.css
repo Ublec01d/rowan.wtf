@@ -257,17 +257,43 @@ button#addButton:hover {
 
 .script-box {
     background-color: black;
-    border: 1px solid lime;
+    border: 0px solid lime;
     padding: 10px;
-    margin-bottom: 20px;
-    display: inline-block;
-    width: 100%;
-    max-width: 60%;  /* Set maximum width to 50% */
+    margin: 20px auto; /* This centers it */
+    width: 90%; /* Take up most of the width on small screens */
+    max-width: 600px; /* Prevents it from stretching too wide */
     text-align: left;
-    white-space: normal;  /* Allow normal text wrapping */
-    word-wrap: break-word;  /* Break long words to wrap */
-    overflow-wrap: break-word;  /* Break words when necessary */
-    overflow: auto;  /* scrollbars */
+    box-sizing: border-box;
+}
+
+/* Base styling for ALL <pre> blocks */
+pre {
+    white-space: pre-wrap;        /* Wrap long lines */
+    word-break: break-word;       /* Break long words if needed */
+    overflow-x: auto;             /* Enable horizontal scroll if needed */
+    font-size: 1em;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid lime;
+    background-color: black;
+    color: lime;
+    font-family: "Courier New", Courier, monospace;
+    margin: 10px auto;
+    text-align: left;
+}
+
+/* Mobile font scaling */
+@media (max-width: 768px) {
+    pre {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    pre {
+        font-size: 0.75em;
+    }
 }
 
 .copy-btn {
