@@ -39,7 +39,32 @@ signInAnonymously(auth)
         console.error("Error signing in:", error);
     });
 
+    let wakeLock = null;
 
+    async function requestWakeLock() {
+        try {
+            if ('wakeLock' in navigator) {
+                wakeLock = await navigator.wakeLock.request('screen');
+                console.log("Wake lock activated");
+    
+                wakeLock.addEventListener('release', () => {
+                    console.log("Wake lock released");
+                });
+            }
+        } catch (err) {
+            console.error(`Wake lock error: ${err.name}, ${err.message}`);
+        }
+    }
+    
+    function releaseWakeLock() {
+        if (wakeLock !== null) {
+            wakeLock.release()
+                .then(() => {
+                    wakeLock = null;
+                });
+        }
+    }
+    
 // Global game variables
 let gridSize, snake, direction, food, score, highScore = 0, highScorePlayer = "";
 let initialSpeed = 200;
@@ -244,6 +269,15 @@ window.onload = () => {
     initializeGame();
     setupControls();
     startGame();
+    requestWakeLock();
 };
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        requestWakeLock();
+    } else {
+        releaseWakeLock();
+    }
+});
+
 
 window.addEventListener('resize', resizeCanvas);
