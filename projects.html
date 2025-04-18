@@ -47,7 +47,6 @@
                 <li><a href="#quiz-container">Subnet quiz</a></li>
                 <li><a href="#scripts">scripts</a></li>
                 <li><a href="#kalipi">kalipi</a></li>
-                <li><a href="#infodump">infodump</a></li>
             </ul>
             <br>
           <br>
@@ -276,7 +275,7 @@ There's nothing here yet :(
             
 
             <div class="script-box">
-            <pre>
+            <pre id="script-kalipi">
 ⚙️ About the KaliPi
 -------------------------------------
 - Built as an improved successor to the deprecated HackPi project  
@@ -332,32 +331,6 @@ Configs:
             <br>
             <br>
             <br>
-  
-
-            <!-- Section for Infodump -->
-            <p id="infodump"><img src="images/coin.gif" alt="Skull"> <strong>infodump</strong> <img src="images/coin.gif" alt="Skull"></p>
-            <ul>
-                <li>Just a bunch of information, open for anyone to add something, but I do moderate to some degree.</li>
-                <li>If you believe that any content posted here infringes upon your rights, please contact me to request removal.</li>
-                <br>
-                <br>
-
-                <li><strong>Add something to the pile:</strong></li>
-                <li>
-                    <input type="text" id="inputBox" placeholder="Input whatever..." style="width: 40%;">
-                    <button id="addButton">Dump</button>
-                </li>
-                <br>
-
-                <li><img src="images/flipper.gif" alt="Skull"> <strong>Dumped data:</strong> <img src="images/flipper.gif" alt="Skull"></li>
-                
-                <div class="dump-box">
-                    <li>
-                        <div id="displayText"></div>
-                    </li>
-                </div>
-                    
-            </ul>
             <br>
             <br>
             <br>
@@ -392,25 +365,25 @@ Configs:
     <script src="conv.js"></script>
     <script src="cookie-popup.js"></script>
     
-<script>
-    // Attach click listener only to non-GIF images
-    document.querySelectorAll("img").forEach(img => {
-        if (!img.src.toLowerCase().endsWith(".gif")) {
-            img.addEventListener("click", function () {
-                const overlay = document.getElementById("imageOverlay");
-                const overlayImg = document.getElementById("overlayImg");
-
-                overlayImg.src = this.src;
-                overlay.style.display = "flex";
-            });
+    <script>
+        // Attach click listener only to non-GIF images
+        document.querySelectorAll("img").forEach(img => {
+            if (!img.src.toLowerCase().endsWith(".gif")) {
+                img.addEventListener("click", function () {
+                    const overlay = document.getElementById("imageOverlay");
+                    const overlayImg = document.getElementById("overlayImg");
+    
+                    overlayImg.src = this.src;
+                    overlay.style.display = "flex";
+                });
+            }
+        });
+    
+        function hideImage() {
+            document.getElementById("imageOverlay").style.display = "none";
         }
-    });
-
-    function hideImage() {
-        document.getElementById("imageOverlay").style.display = "none";
-    }
-</script>
-
+    </script>
+    
     
 
 </body>
