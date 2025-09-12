@@ -36,7 +36,7 @@ function ipToBinary(ip) {
     correctNetworkAddress = network;
     correctBroadcastAddress = broadcast;
   
-    document.getElementById('question').textContent = `What are the subnet mask, total addresses, network address, and broadcast address for ${ip} /${cidr}?`;
+    document.getElementById('question').textContent = `What are the subnet mask, total number of hosts, network address, and broadcast address for ${ip} /${cidr}?`;
   
     // Clear the input fields
     document.getElementById('subnetMaskAnswer').value = '';
