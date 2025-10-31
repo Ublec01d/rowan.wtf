@@ -485,7 +485,7 @@
       + timeAlive * 0.05
       + randRange(0, ENEMY_BASE_SIZE_VAR)
     );
-    const troopBonus = Math.floor(player.blobs.length * 0.5);
+    const troopBonus = Math.floor(player.blobs.length * 0.2);
     const waveSize = baseWave + troopBonus;
 
     const spawnX = randRange(40, WIDTH*0.45);
@@ -493,9 +493,9 @@
 
     for (let i=0; i<waveSize; i++){
       // HP scales with timeAlive
-      const baseHp = 1;
+      const baseHp = 0.5;
       const hpGrowth = timeAlive * 1.1;
-      const hpRaw = baseHp + randRange(0, 2) + hpGrowth * 0.5;
+      const hpRaw = baseHp + randRange(0, 2) + hpGrowth * 0.3;
       const finalHp = Math.floor(hpRaw);
 
       enemyBlobs.push({
@@ -1040,5 +1040,6 @@
 </script>
 </body>
 </html>
+
 
 
