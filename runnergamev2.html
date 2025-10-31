@@ -482,7 +482,7 @@
   function spawnEnemyWave(){
     const baseWave = Math.floor(
       ENEMY_BASE_SIZE_MIN
-      + timeAlive * 0.15
+      + timeAlive * 0.05
       + randRange(0, ENEMY_BASE_SIZE_VAR)
     );
     const troopBonus = Math.floor(player.blobs.length * 0.5);
@@ -1040,4 +1040,5 @@
 </script>
 </body>
 </html>
+
 
