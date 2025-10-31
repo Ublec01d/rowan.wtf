@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Army Runner v21</title>
+<style>
+body{margin:0;background:#111;color:#fff;font-family:system-ui,sans-serif;overflow:hidden;touch-action:none}
+canvas{display:block;background:#1a1a1a;border-left:2px solid #333;border-right:2px solid #333}
+#ui{position:fixed;top:10px;left:10px;background:rgba(0,0,0,.4);padding:8px 10px;border:1px solid #444;border-radius:6px;z-index:10;font-size:14px;line-height:1.4;min-width:140px;display:none}
+#menuOverlay,#gameoverOverlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.8);font-size:20px;text-align:center;z-index:20}
+#gameoverOverlay{display:none}
+.overlay-button-hint{margin-top:12px;font-size:16px;opacity:.8}
+#finalStats{margin-top:16px;font-size:14px;line-height:1.5;color:#aaa;white-space:pre-line}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="ui">
+  <div>Troops: <span id="troopsVal">0</span></div>
+  <div>Weapon DMG: <span id="dmgVal">1.0</span>x</div>
+  <div>Escaped: <span id="escapedVal">0</span>/10</div>
+  <div>Kills: <span id="scoreVal">0</span></div>
+  <div style="opacity:.7">Move: drag / ← →</div>
+</div>
+<div id="menuOverlay">
+  <div>ARMY RUNNER PROTOTYPE</div>
+  <div class="overlay-button-hint">Tap / Space to start</div>
+</div>
+<div id="gameoverOverlay">
+  <div id="gameoverText">GAME OVER</div>
+  <div id="finalStats"></div>
+  <div class="overlay-button-hint">Tap / Space to retry</div>
+</div>
+
+<script>
+(() => {
+// canvas / ui refs
+const cvs=document.getElementById("game"),ctx=cvs.getContext("2d");
+const ui=document.getElementById("ui"),
+  troopsVal=document.getElementById("troopsVal"),
+  dmgVal=document.getElementById("dmgVal"),
+  escVal=document.getElementById("escapedVal"),
+  scoreVal=document.getElementById("scoreVal"),
+  menu=document.getElementById("menuOverlay"),
+  over=document.getElementById("gameoverOverlay"),
+  overTxt=document.getElementById("gameoverText"),
+  stats=document.getElementById("finalStats");
+
+// canvas sizing
+let W=innerWidth,H=innerHeight;
+function resize(){W=innerWidth;H=innerHeight;cvs.width=W;cvs.height=H}
+resize();addEventListener("resize",resize);
+
+// constants / player
+const BLOB_R=6,MAX_COLS=6,MAX_ROWS=5;
+const player={
+  x:W/2,
+  y:H-100,
+  w:60,h:40,
+  speed:500,
+  blobs:[],
+  colSpacingX:14,
+  rowSpacingY:12,
+  fireCooldown:0,
+  fireRate:.2,
+  blobRadius:BLOB_R,
+  reserveCount:0
+};
+
+// game state vars
+let gameState="menu";
+let bullets=[],
+    enemyBlobs=[],
+    enemyGhosts=[],
+    barrels=[],
+    portals=[],
+    floatTexts=[];
+let score=0,
+    timeAlive=0,
+    escaped=0,
+    spawnE=0,
+    spawnB=0,
+    spawnP=0,
+    currentDMG=1,
+    keys={left:0,right:0};
+
+// helpers
+const rand=(a,b)=>Math.random()*(b-a)+a;
+const clamp=(v,l,h)=>v<l?l:v>h?h:v;
+const dist=(a,b,c,d)=>Math.hypot(a-c,b-d);
+
+// flow
+function startGame(){
+  reset();
+  gameState="game";
+  ui.style.display="block";
+  menu.style.display="none";
+  over.style.display="none";
+}
+function gameOver(r){
+  gameState="over";
+  stats.textContent=
+    `Kills: ${score}\n`+
+    `Time: ${timeAlive.toFixed(1)}s\n`+
+    `Troops left: ${player.blobs.length+player.reserveCount}`;
+  overTxt.textContent=r;
+  over.style.display="flex";
+  ui.style.display="none";
+}
+function reset(){
+  player.x=W/2;player.y=H-100;
+  player.fireCooldown=0;
+  currentDMG=1;
+
+  player.blobs=[];
+  player.reserveCount=0;
+
+  score=0;
+  timeAlive=0;
+  escaped=0;
+
+  bullets=[];
+  enemyBlobs=[];
+  enemyGhosts=[];
+  barrels=[];
+  portals=[];
+  floatTexts=[];
+
+  spawnE=0;
+  spawnB=rand(3.5,5);
+  spawnP=rand(4,6);
+
+  initBlobs(3);
+}
+
+// squad handling
+function initBlobs(n){
+  for(let i=0;i<n;i++) player.blobs.push(makeBlob());
+  assignSlots();
+}
+function makeBlob(){
+  return{
+    slotX:0,
+    slotY:0,
+    scatterX:rand(-2,2),
+    scatterY:rand(-2,2),
+    drawX:player.x,
+    drawY:player.y,
+    vx:0,
+    vy:0,
+    wobbleT:Math.random()*6.28
+  };
+}
+function assignSlots(){
+  player.blobs.forEach((b,i)=>{
+    b.slotX=i%MAX_COLS;
+    b.slotY=Math.min(Math.floor(i/MAX_COLS),MAX_ROWS-1);
+  });
+}
+function rebuild(){
+  assignSlots();
+}
+function addFloat(t,x,y,c){
+  floatTexts.push({t,x,y,c,l:1});
+}
+
+function idealX(b){
+  const mid=(MAX_COLS-1)/2;
+  return (
+    player.x +
+    (b.slotX-mid)*player.colSpacingX +
+    (b.slotY%2?-2:2) +
+    b.scatterX
+  );
+}
+function idealY(b){
+  return player.y-(b.slotY*player.rowSpacingY)+b.scatterY;
+}
+function blobPos(i){
+  return{
+    x:player.blobs[i].drawX,
+    y:player.blobs[i].drawY
+  };
+}
+function updateBlobs(dt){
+  const k=35,d=12;
+  for(const b of player.blobs){
+    const tx=idealX(b),ty=idealY(b);
+    b.wobbleT+=dt*8;
+    const wobX=Math.cos(b.wobbleT);
+    const wobY=Math.sin(b.wobbleT*1.7)*.6;
+    const gx=tx+wobX,gy=ty+wobY;
+    const ax=(gx-b.drawX)*k-b.vx*d;
+    const ay=(gy-b.drawY)*k-b.vy*d;
+    b.vx+=ax*dt;
+    b.vy+=ay*dt;
+    b.drawX+=b.vx*dt;
+    b.drawY+=b.vy*dt;
+  }
+}
+
+// capped visible army + reserve overflow
+function addBlobs(n){
+  const CAP=500;
+  for(let i=0;i<n;i++){
+    if(player.blobs.length < CAP){
+      player.blobs.push(makeBlob());
+    }else{
+      player.reserveCount++;
+    }
+  }
+  rebuild();
+}
+function killBlobs(n){
+  let k=n;
+  if(k>0){
+    const m=Math.min(k,player.blobs.length);
+    player.blobs.splice(0,m);
+    k-=m;
+  }
+  if(k>0){
+    player.reserveCount=Math.max(0,player.reserveCount-k);
+  }
+  if(player.blobs.length<=0 && player.reserveCount<=0){
+    gameOver("Your squad was wiped");
+  }else{
+    rebuild();
+  }
+}
+
+// portal difficulty curve (softened)
+function calcPortalStart(totalTroops){
+  const over = Math.max(0,totalTroops - 15);
+
+  // gentler growth:
+  // base + linear + sqrt curve instead of quadratic blowup
+  const punish =
+    10 +
+    totalTroops * 2 +
+    Math.sqrt(over) * 8;
+
+  return -Math.floor(punish);
+}
+
+// enemy wave spawning (HP scaling, capped wave size)
+function spawnEnemy(){
+  const totalArmy = player.blobs.length + player.reserveCount;
+
+  // wave size that grows slowly and is capped
+  const baseCount   = 4;
+  const timeBonus   = timeAlive * 0.05;
+  const armyBonus   = totalArmy * 0.01;
+  const randomBonus = rand(0,3);
+
+  let n = Math.floor(baseCount + timeBonus + armyBonus + randomBonus);
+  if(n < 3) n = 3;
+  if(n > 15) n = 15;
+
+  for(let i=0;i<n;i++){
+    const baseHP   = 3;
+    const timeHP   = timeAlive * 1.2;
+    const armyHP   = totalArmy * 0.05;
+    const roll     = rand(-2,4);
+
+    let hp = Math.floor(baseHP + timeHP + armyHP + roll);
+    if(hp < 1) hp = 1;
+
+    enemyBlobs.push({
+      x: rand(40, W*0.45) + rand(-25,25),
+      y: -60 + rand(-25,25),
+      r: 8,
+      hp,
+      maxHp: hp
+    });
+  }
+}
+
+// barrels (weapon upgrades)
+function spawnBarrel(){
+  const hp=Math.floor(rand(30,90));
+  barrels.push({
+    x:rand(W*0.55,W-60),
+    y:-40,
+    w:30,
+    h:30,
+    hp:hp,
+    startHp:hp,
+    fall:40,
+    dead:0
+  });
+}
+
+// portals (troop gateways)
+function spawnPortal(){
+  const totalTroops = player.blobs.length + player.reserveCount;
+  portals.push({
+    x:rand(W*0.55,W-60),
+    y:-60,
+    w:35,
+    h:35,
+    val:calcPortalStart(totalTroops),
+    fall:40
+  });
+}
+
+// firing
+function fire(){
+  for(let i=0;i<player.blobs.length;i++){
+    const p=blobPos(i);
+    bullets.push({
+      x:p.x-2,
+      y:p.y,
+      w:4,
+      h:8,
+      s:400,
+      dmg:1*currentDMG
+    });
+  }
+}
+
+// main update
+function update(dt){
+  timeAlive+=dt;
+
+  // movement (touch overrides keyboard)
+  if(!touchActive){
+    let dx=(keys.left?-1:0)+(keys.right?1:0);
+    player.x=clamp(player.x+dx*player.speed*dt,10,W-10);
+  }else{
+    player.x=clamp(player.x,10,W-10);
+  }
+  player.y=H-100;
+
+  // squad wobble physics
+  updateBlobs(dt);
+
+  // autofire
+  player.fireCooldown-=dt;
+  if(player.fireCooldown<=0 && player.blobs.length){
+    fire();
+    player.fireCooldown=player.fireRate;
+  }
+
+  // bullets move + collisions
+  for(let i=bullets.length-1;i>=0;i--){
+    const b=bullets[i];
+    b.y-=b.s*dt;
+    if(b.y<-20){
+      bullets.splice(i,1);
+      continue;
+    }
+
+    let hit=0;
+
+    // vs enemies
+    for(let e=enemyBlobs.length-1;e>=0 && !hit;e--){
+      const en=enemyBlobs[e];
+      if(dist(b.x,b.y,en.x,en.y) < en.r+4){
+        en.hp-=b.dmg;
+        if(en.hp<=0){
+          enemyBlobs.splice(e,1);
+          score++;
+          enemyGhosts.push({x:en.x,y:en.y,vy:-60,a:1});
+        }
+        hit=1;
+      }
+    }
+    if(hit){
+      bullets.splice(i,1);
+      continue;
+    }
+
+    // vs barrels
+    for(let br=barrels.length-1;br>=0 && !hit;br--){
+      const brl=barrels[br];
+      if(
+        b.x < brl.x+brl.w &&
+        b.x+b.w > brl.x &&
+        b.y < brl.y+brl.h &&
+        b.y+b.h > brl.y
+      ){
+        brl.hp-=b.dmg;
+        if(brl.hp<=0){
+          brl.dead=1;
+        }
+        hit=1;
+      }
+    }
+    if(hit){
+      bullets.splice(i,1);
+      continue;
+    }
+
+    // vs portals
+    for(let p=portals.length-1;p>=0 && !hit;p--){
+      const pt=portals[p];
+      if(
+        b.x < pt.x+pt.w &&
+        b.x+b.w > pt.x &&
+        b.y < pt.y+pt.h &&
+        b.y+b.h > pt.y
+      ){
+        pt.val+=b.dmg;
+        hit=1;
+      }
+    }
+    if(hit){
+      bullets.splice(i,1);
+      continue;
+    }
+  }
+
+  // enemies advance / collide / escape
+  for(let e=enemyBlobs.length-1;e>=0;e--){
+    const en=enemyBlobs[e];
+
+    // slightly slower approach than older builds
+    en.y += 15*(1+timeAlive*0.015)*dt;
+
+    // collide with squad:
+    for(let pb=player.blobs.length-1;pb>=0;pb--){
+      const pbx=player.blobs[pb].drawX;
+      const pby=player.blobs[pb].drawY;
+      if(dist(en.x,en.y,pbx,pby) < en.r+player.blobRadius){
+        killBlobs(1);        // costs you 1 troop (reserve aware)
+        enemyBlobs.splice(e,1);
+        break;
+      }
+    }
+
+    // escaped past bottom
+    if(en.y>H+40){
+      enemyBlobs.splice(e,1);
+      escaped++;
+      if(escaped>10){
+        gameOver("Too many escaped");
+      }
+    }
+  }
+
+  // barrels fall / interact
+  for(let br=barrels.length-1;br>=0;br--){
+    const brl=barrels[br];
+    brl.y+=brl.fall*dt;
+
+    let touched=0;
+    for(const pb of player.blobs){
+      if(dist(pb.drawX,pb.drawY,brl.x+15,brl.y+15) < player.blobRadius+15){
+        touched=1;
+        break;
+      }
+    }
+
+    if(touched){
+      if(!brl.dead){
+        // hit a live barrel = you lose troops hard
+        killBlobs(3);
+        if(player.blobs.length+player.reserveCount<=0){
+          gameOver("Rammed a barrel");
+        }
+      }else{
+        // destroyed barrel = weapon upgrade
+        currentDMG+=0.5;
+        addFloat("+DMG",brl.x,brl.y,"#6cf");
+      }
+      barrels.splice(br,1);
+    }else if(brl.y>H+60){
+      barrels.splice(br,1);
+    }
+  }
+
+  // portals fall / interact
+  for(let p=portals.length-1;p>=0;p--){
+    const pt=portals[p];
+    pt.y+=pt.fall*dt;
+
+    let touched=0;
+    for(const pb of player.blobs){
+      if(dist(pb.drawX,pb.drawY,pt.x+17,pt.y+17) < player.blobRadius+17){
+        touched=1;
+        break;
+      }
+    }
+
+    if(touched){
+      const v=Math.floor(pt.val);
+      if(v<0){
+        killBlobs(Math.abs(v));
+      }else if(v>0){
+        addBlobs(v);
+      }
+      addFloat(
+        v>0?("+"+v):(""+v),
+        pt.x,pt.y,
+        v>0?"#6f6":"#f66"
+      );
+      portals.splice(p,1);
+    }else if(pt.y>H+60){
+      portals.splice(p,1);
+    }
+  }
+
+  // floaty text animation
+  for(let i=floatTexts.length-1;i>=0;i--){
+    const f=floatTexts[i];
+    f.y-=20*dt;
+    f.l-=dt;
+    if(f.l<=0){
+      floatTexts.splice(i,1);
+    }
+  }
+
+  // enemy death ghosts
+  for(let i=enemyGhosts.length-1;i>=0;i--){
+    const g=enemyGhosts[i];
+    g.y+=g.vy*dt;
+    g.a-=dt;
+    if(g.a<=0){
+      enemyGhosts.splice(i,1);
+    }
+  }
+
+  // spawn timers
+  spawnE-=dt;
+  spawnB-=dt;
+  spawnP-=dt;
+
+  if(spawnE<=0){
+    spawnEnemy();
+    spawnE = rand(.8,1.2) - timeAlive*0.004;
+    if(spawnE<.3) spawnE=.3;
+  }
+  if(spawnB<=0){
+    spawnBarrel();
+    spawnB=rand(3.5,5);
+  }
+  if(spawnP<=0){
+    spawnPortal();
+    spawnP=rand(4,6);
+  }
+
+  // HUD
+  troopsVal.textContent = player.blobs.length + player.reserveCount;
+  dmgVal.textContent    = currentDMG.toFixed(1);
+  escVal.textContent    = escaped;
+  scoreVal.textContent  = Math.floor(score);
+}
+
+// drawing
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  // lanes: left = enemy lane, right = pickup lane
+  ctx.fillStyle="#1f1f1f";
+  ctx.fillRect(0,0,W*0.5,H);
+  ctx.fillStyle="#222";
+  ctx.fillRect(W*0.5,0,W*0.5,H);
+
+  // enemy souls
+  for(const g of enemyGhosts){
+    ctx.globalAlpha=g.a;
+    ctx.beginPath();
+    ctx.fillStyle="#fff";
+    ctx.arc(g.x,g.y,8,0,Math.PI*2);
+    ctx.fill();
+    ctx.globalAlpha=1;
+  }
+
+  // bullets
+  ctx.fillStyle="#fff";
+  for(const b of bullets){
+    ctx.fillRect(b.x,b.y,b.w,b.h);
+  }
+
+  // enemies: color → hp ratio (red to dark)
+  for(const en of enemyBlobs){
+    const ratio=Math.max(0,Math.min(1,en.hp/en.maxHp));
+    const r=Math.floor(255*ratio);
+    const g=Math.floor(50*ratio);
+    const bl=Math.floor(50*ratio);
+    ctx.fillStyle=`rgb(${r},${g},${bl})`;
+    ctx.beginPath();
+    ctx.arc(en.x,en.y,en.r,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  // barrels + clamped hp bar
+  for(const br of barrels){
+    ctx.fillStyle=br.dead?"#555":"#a36a2a";
+    ctx.fillRect(br.x,br.y,br.w,br.h);
+
+    const h = Math.max(0, br.hp / br.startHp); // <-- clamp fix
+    ctx.fillStyle="#000";
+    ctx.fillRect(br.x,br.y-6,br.w,4);
+    ctx.fillStyle="#0ff";
+    ctx.fillRect(br.x,br.y-6,br.w*h,4);
+  }
+
+  // portals
+  for(const pt of portals){
+    ctx.fillStyle="#3af";
+    ctx.fillRect(pt.x,pt.y,pt.w,pt.h);
+    ctx.strokeStyle="#9cf";
+    ctx.lineWidth=2;
+    ctx.strokeRect(pt.x,pt.y,pt.w,pt.h);
+
+    ctx.fillStyle=pt.val<0?"#f66":"#6f6";
+    ctx.font="12px sans-serif";
+    ctx.textAlign="center";
+    ctx.fillText(Math.floor(pt.val),pt.x+pt.w/2,pt.y-8);
+  }
+
+  // player blobs
+  for(const b of player.blobs){
+    ctx.beginPath();
+    ctx.fillStyle="#4aa3ff";
+    ctx.arc(b.drawX,b.drawY,player.blobRadius,0,Math.PI*2);
+    ctx.fill();
+  }
+
+  // floating texts
+  for(const f of floatTexts){
+    ctx.fillStyle=f.c;
+    ctx.font="14px sans-serif";
+    ctx.textAlign="center";
+    ctx.fillText(f.t,f.x,f.y);
+  }
+}
+
+// main loop
+let last=performance.now();
+function loop(t){
+  const dt=(t-last)/1000;
+  last=t;
+  if(gameState==="game") update(dt);
+  draw();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+// input
+let touchActive=0,startX=0,startPX=0;
+
+// touch / mouse drag
+addEventListener("pointerdown",e=>{
+  if(gameState!=="game") startGame();
+  touchActive=1;
+  startX=e.clientX;
+  startPX=player.x;
+});
+addEventListener("pointermove",e=>{
+  if(touchActive){
+    player.x=startPX+(e.clientX-startX);
+  }
+});
+addEventListener("pointerup",()=>{touchActive=0;});
+addEventListener("pointercancel",()=>{touchActive=0;});
+addEventListener("pointerleave",()=>{touchActive=0;});
+
+// keyboard
+addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft"||e.key==="a") keys.left=1;
+  if(e.key==="ArrowRight"||e.key==="d") keys.right=1;
+  if(e.key===" "){
+    if(gameState!=="game") startGame();
+  }
+});
+addEventListener("keyup",e=>{
+  if(e.key==="ArrowLeft"||e.key==="a") keys.left=0;
+  if(e.key==="ArrowRight"||e.key==="d") keys.right=0;
+});
+})();
+</script>
+</body>
+</html>
