@@ -573,8 +573,8 @@
     } else if (applyVal > 0){
       // positive -> we gain troops
       // but hard-cap to prevent instant 20k snowball
-      const cappedVal = Math.min(applyVal, 20);
-      addPlayerBlobs(cappedVal);
+
+      addPlayerBlobs(applyVal);
       addFloatText("+"+cappedVal, p.x+p.w/2, p.y, "#6f6");
     }
 
@@ -1010,3 +1010,4 @@
 </script>
 </body>
 </html>
+
